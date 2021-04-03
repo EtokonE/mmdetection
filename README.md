@@ -1,3 +1,13 @@
+## Описание
+- **./mmdet/datasets/my_dataset.py** - Создаем кастомный датасет
+- **./mmdet/datasets/__init__.py** - Регистрируем кастомный датасет
+- **./define_anno.py** - Определяем данные, используемые для Обучения, Валидации и Тестирования
+- **./my_configs** - Создаем конфиги
+- **./experiment** - Сохраняем результаты
+ 
+
+
+
 <div align="center">
   <img src="resources/mmdet-logo.png" width="600"/>
 </div>
