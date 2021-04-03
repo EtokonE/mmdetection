@@ -178,8 +178,7 @@ data = dict(
     val=dict(
         type='MyDataset',
         classes = classes,
-        ann_file=
-        '/home/dron_maks/data/full_data/ch01_20200605121410-part 00000.json',
+        ann_file='/home/dron_maks/data/full_data/ch01_20200605121410-part 00000.json',
         img_prefix='/home/dron_maks/data/full_data/',
         pipeline=[
             dict(type='LoadImageFromFile'),
@@ -203,8 +202,7 @@ data = dict(
     test=dict(
         type='MyDataset',
         classes = classes,
-        ann_file=
-        '/home/dron_maks/data/full_data/ch02_20200605114152-part 00000.json',
+        ann_file='/dron_maks/data/full_data/ch02_20200605114152-part 00000.json',
         img_prefix='/home/dron_maks/data/full_data/',
         pipeline=[
             dict(type='LoadImageFromFile'),
@@ -225,7 +223,8 @@ data = dict(
                     dict(type='Collect', keys=['img'])
                 ])
         ]))
-evaluation = dict(interval=1, metric=['mAP', 'recall'])
+
+evaluation = dict(interval=1, metric='mAP')
 optimizer = dict(type='SGD', lr=0.0025, momentum=0.9, weight_decay=0.0001)
 optimizer_config = dict(grad_clip=None)
 lr_config = dict(
@@ -243,5 +242,7 @@ log_level = 'INFO'
 load_from = 'http://download.openmmlab.com/mmdetection/v2.0/faster_rcnn/faster_rcnn_r50_caffe_fpn_1x_coco/faster_rcnn_r50_caffe_fpn_1x_coco_bbox_mAP-0.378_20200504_180032-c5925ee5.pth'
 resume_from = None
 workflow = [('train', 1)]
-work_dir = './experiment/faster_rcnn_full_Tensorboard_concat_recall'
+
+work_dir = './experiment/faster_rcnn_full_Tensorboard_concat'
+
 
