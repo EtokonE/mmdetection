@@ -3,17 +3,20 @@ from define_anno import TRAIN_FILES, TEST_FILES, VAL_FILES, data_root
 print(f'TRAIN FILES: {TRAIN_FILES}')
 print(f'VAL FILES: {VAL_FILES}')
 print(f'TEST FILES: {TEST_FILES}')
-input_size = 512
+
+input_size = 512 # Размер входного изображения
 model = dict(
-    type='SingleStageDetector',
-    pretrained='open-mmlab://vgg16_caffe',
-    backbone=dict(
-        type='SSDVGG',
-        input_size=512,
-        depth=16,
-        with_last_pool=False,
-        ceil_mode=True,
-        out_indices=(3, 4),
+    type='SingleStageDetector', # Название детектора
+    pretrained='open-mmlab://vgg16_caffe', # Откуда будем загружать предобученные веса 
+    backbone=dict(          # Определяем конфигурацию классификатора -> https://mmdetection.readthedocs.io/en/latest/_modules/mmdet/models/backbones/ssd_vgg.html
+        type='SSDVGG',      # Тип сети      
+        input_size=512,     # Размер входных данных
+        depth=16,           # Глубина сети
+        with_last_pool=False, # Убирает пулинг в последнем слое VGG -> https://mmcv.readthedocs.io/en/stable/_modules/mmcv/cnn/vgg.html
+        ceil_mode=True,     # Используется в nn.MaxPool2d.
+                            # В случае режима ceil дополнительные столбцы и строки добавляются как справа, так и снизу. 
+                            # (Не сверху и не слева). Это не обязательно должна быть одна дополнительная колонка. Это также зависит от величины шага. 
+        out_indices=(3, 4), 
         out_feature_indices=(22, 34),
         l2_norm_scale=20),
     neck=None,
