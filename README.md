@@ -4,6 +4,7 @@
 - **./define_anno.py** - Определяем данные, используемые для Обучения, Валидации и Тестирования
 - **./my_configs** - Создаем конфиги
 - **./experiment** - Сохраняем результаты
+- **Запусе на определенном GPU:** CUDA_VISIBLE_DEVICES={$GPU_NUMBER} ./tools/dist_train.sh {$CONFIG} {$GPU_COUNT}
  
 
 
