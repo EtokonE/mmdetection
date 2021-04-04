@@ -1,14 +1,14 @@
 ## Описание
-- **./mmdet/datasets/my_dataset.py** - Создаем кастомный датасет
-- **./mmdet/datasets/__init__.py** - Регистрируем кастомный датасет
-- **./define_anno.py** - Определяем данные, используемые для Обучения, Валидации и Тестирования
-- **./my_configs** - Создаем конфиги
-- **./experiment** - Сохраняем результаты
+- **[mmdet/datasets/my_dataset.py](mmdet/datasets/my_dataset.py)** - Создаем кастомный датасет
+- **[mmdet/datasets/__init__.py](mmdet/datasets/__init__.py)** - Регистрируем кастомный датасет
+- **[define_anno.py](define_anno.py)** - Определяем данные, используемые для Обучения, Валидации и Тестирования
+- **[my_configs](my_configs)** - Создаем конфиги
+- **[experiment](experiment)** - Сохраняем результаты
 - **Запуск на определенном GPU:** CUDA_VISIBLE_DEVICES={$GPU_NUMBER} ./tools/dist_train.sh {$CONFIG} {$GPU_COUNT}
  
 
 ### #TODO
-- [ ] Описать базовый конфиг SSD -> **./my_configs/ssd/my_ssd512_full.py**
+- [ ] Описать базовый конфиг SSD -> **[my_configs/ssd/my_ssd512_full.py](my_configs/ssd/my_ssd512_full.py)**
 
 
 
