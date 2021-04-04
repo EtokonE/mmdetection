@@ -7,6 +7,9 @@
 - **Запуск на определенном GPU:** CUDA_VISIBLE_DEVICES={$GPU_NUMBER} ./tools/dist_train.sh {$CONFIG} {$GPU_COUNT}
  
 
+### #TODO
+- [ ] Описать базовый конфиг SSD -> **./my_configs/ssd/my_ssd512_full.py**
+
 
 
 <div align="center">
