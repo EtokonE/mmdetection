@@ -233,7 +233,7 @@ train_pipeline = [
         min_crop_size=0.3),
     dict(type='Resize', img_scale=(512, 512), keep_ratio=False),  # Изменяем размер входного изображения
     dict(
-        type='Normalize', # Нормализация
+        type='Normalize',  # Нормализация
         mean=[123.675, 116.28, 103.53],
         std=[1, 1, 1],
         to_rgb=True),
@@ -259,8 +259,8 @@ test_pipeline = [
         ])
 ]
 data = dict(
-    samples_per_gpu=32, # Batch size of a single GPU
-    workers_per_gpu=3, # Worker to pre-fetch data for each single GPU
+    samples_per_gpu=32,  # Batch size of a single GPU
+    workers_per_gpu=3,  # Worker to pre-fetch data for each single GPU
     train=dict(
             type=dataset_type,
             ann_file=TRAIN_FILES,
@@ -295,7 +295,7 @@ data = dict(
             ]),
     val=dict(
         type=dataset_type,
-        ann_file= VAL_FILES, 
+        ann_file=VAL_FILES,
         img_prefix=data_root,
         pipeline=[
             dict(type='LoadImageFromFile'),
@@ -354,4 +354,3 @@ load_from = 'http://download.openmmlab.com/mmdetection/v2.0/ssd/ssd512_coco/ssd5
 resume_from = None
 workflow = [('train', 1)]
 work_dir = './experiment/ssd/my_ssd_full'
-
