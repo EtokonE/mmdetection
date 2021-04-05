@@ -148,55 +148,103 @@ model = dict(
             # Порог IoF для игнорирования bbox-ов (если указан `gt_bboxes_ignore`).
             # Отрицательные значения не означают игнорирование любых bboxes
             ignore_iof_thr=-1,
+            # ---------------------------------------------------
+
+            # Слудует ли назначать всем боксам с наибольшим перекрытием с некоторым истинным боксом именно к этому боксу
+            # Имеется в виду что на шаге 3 может может возникнуть следующая ситуация:
+            # bbox_A имеет iou = 0.9 и 0.8 с истинными боксами b_1 и b_2 соответственно =>
+            # => b_1 будет определен как наилучший для bbox_A. Однако если b_2 имеет gt_argmax_overlaps = A =>
+            # => (максимальное перекрытие именно с этим боксом), то assign_gt_inds бокса А будет перезаписан на b_2??
+            # (However, if GT bbox 2's gt_argmax_overlaps=A, bbox A's assigned_gt_inds will be overwritten to be bbox B)
             gt_max_assign_all=False),
         # ---------------------------------------------------
 
+        # Порог кусочной ф-ции L1 => 0.5x^2 if |x| < 1.0
         smoothl1_beta=1.0,
+        # ---------------------------------------------------
+
+        # Максимальная дистанция, на которую дефолт-бокс может вылезать за границу изображения
+        # Устанавливается положительным числом
         allowed_border=-1,
+        # ---------------------------------------------------
+
+        # Вес положительных образцов во время обучения.???
+        # Если здесь <= 0, то pos_weight = 1.0
         pos_weight=-1,
+        # ---------------------------------------------------
+
+        # Предпологаю что это N_hard_negatives
+        # Negative - все не сматченные по порогу с истинными боксы, их в разы больше =>
+        # Нам нужно определить в каком соотношении будем добавлять их в лосс
+        # https://mmdetection.readthedocs.io/en/latest/_modules/mmdet/models/dense_heads/ssd_head.html
         neg_pos_ratio=3,
+        # ---------------------------------------------------
+
         debug=False),
+    # ---------------------------------------------------
     test_cfg=dict(
+
+        # Нам необходимо вычислить iou между всеми предсказанными боксами. Для этого берем все у которых взаимное
+        # Перекрытие не меньше указанного порога и оставляем самый уверенный по скору класса (Можно увеличить)
         nms=dict(type='nms', iou_threshold=0.3),
+        # ---------------------------------------------------
+
         min_bbox_size=0,
-        score_thr=0.02,
+        score_thr=0.02,  # Минимальный порог для визуализации боксов
         max_per_img=200))
-cudnn_benchmark = True
-dataset_type = 'MyDataset'
-#   data_root = '/home/user/Documents/Kalinin/Data/full_data/'
+
+cudnn_benchmark = True  # True для алгоритмов с фиксированным размером входных данных
+dataset_type = 'MyDataset'  # Тип датасета
+# ---------------------------------------------------
+
+# Конфигурация для нормализации входных изображений
+# Средние значения, используемые для предварительно обученных моделей backbone
 img_norm_cfg = dict(mean=[123.675, 116.28, 103.53], std=[1, 1, 1], to_rgb=True)
+# ---------------------------------------------------
+
+
+# https://mmdetection.readthedocs.io/en/latest/_modules/mmdet/datasets/pipelines/transforms.html
 train_pipeline = [
-    dict(type='LoadImageFromFile', to_float32=True),
-    dict(type='LoadAnnotations', with_bbox=True),
+    dict(type='LoadImageFromFile', to_float32=True),  # Загрузка изображений из пути к файлу
+    dict(type='LoadAnnotations', with_bbox=True),  # Загрузка аннотаций к текущему изображению
     dict(
+        # Фотометрическое искажение пременяется к изображению последовательно с вероятность 0,5
+        # 1.случайная яркость
+        # 2.случайный контраст (режим 0)
+        # 3.преобразовать цвет из BGR в HSV
+        # 4.случайная насыщенность
+        # 5.случайный оттенок
+        # 6.преобразовать цвет из HSV в BGR
+        # 7.случайный контраст (режим 1)
+        # 8.произвольно поменять местами каналы
         type='PhotoMetricDistortion',
         brightness_delta=32,
         contrast_range=(0.5, 1.5),
         saturation_range=(0.5, 1.5),
         hue_delta=18),
     dict(
-       type='Expand',
+       type='Expand',  # Рандомный поворот
        mean=[123.675, 116.28, 103.53],
        to_rgb=True,
        ratio_range=(1, 4)),
     dict(
-        type='MinIoURandomCrop',
+        type='MinIoURandomCrop',  # Произвольная обрезка изображения и боксов и минимальныи IoU
         min_ious=(0.1, 0.3, 0.5, 0.7, 0.9),
         min_crop_size=0.3),
-    dict(type='Resize', img_scale=(512, 512), keep_ratio=False),
+    dict(type='Resize', img_scale=(512, 512), keep_ratio=False),  # Изменяем размер входного изображения
     dict(
-        type='Normalize',
+        type='Normalize', # Нормализация
         mean=[123.675, 116.28, 103.53],
         std=[1, 1, 1],
         to_rgb=True),
-    dict(type='RandomFlip', flip_ratio=0.5),
-    dict(type='DefaultFormatBundle'),
-    dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels'])
+    dict(type='RandomFlip', flip_ratio=0.5),  # Поворот
+    dict(type='DefaultFormatBundle'),  # Пакет формата по умолчанию для сбора данных в конвейере
+    dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels'])  # Собираем в пайплайн необходимые ключи
 ]
 test_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(
-        type='MultiScaleFlipAug',
+        type='MultiScaleFlipAug',  # Инкапсуляция тестовых аугментаций
         img_scale=(512, 512),
         flip=False,
         transforms=[
@@ -215,8 +263,8 @@ data = dict(
     workers_per_gpu=3, # Worker to pre-fetch data for each single GPU
     train=dict(
             type=dataset_type,
-            ann_file= TRAIN_FILES, 
-            img_prefix= data_root,
+            ann_file=TRAIN_FILES,
+            img_prefix=data_root,
             pipeline=[
                 dict(type='LoadImageFromFile', to_float32=True),
                 dict(type='LoadAnnotations', with_bbox=True),
