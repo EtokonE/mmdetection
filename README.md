@@ -8,7 +8,7 @@
  
 
 ### #TODO
-- [ ] Описать базовый конфиг SSD -> **[my_configs/ssd/my_ssd512_full.py](my_configs/ssd/my_ssd512_full.py)**
+- [x] Описать базовый конфиг SSD -> **[my_configs/ssd/my_ssd512_full.py](my_configs/ssd/my_ssd512_full.py)**
 
 
 
