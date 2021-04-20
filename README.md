@@ -5,7 +5,7 @@
 - **[my_configs](my_configs)** - Создаем конфиги
 - **[experiment](experiment)** - Сохраняем результаты
 - **Запуск на определенном GPU:** CUDA_VISIBLE_DEVICES={$GPU_NUMBER} ./tools/dist_train.sh {$CONFIG} {$GPU_COUNT}
-- **[mmdetection/tools/analysis_tools/statistics.py](mmdetection/tools/analysis_tools/statistics.py)** - Сбор статистики
+- **[tools/analysis_tools/statistics.py](tools/analysis_tools/statistics.py)** - Сбор статистики
  
 
 ### #TODO
