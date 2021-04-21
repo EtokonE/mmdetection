@@ -4,6 +4,7 @@ import json
 import argparse
 import pandas as pd
 import os
+import matplotlib.pyplot as plt
 
 def get_iou(bb1, bb2):
     """
@@ -62,7 +63,7 @@ def statistic_2(result_pkl, annotation_json, out, iou_thr):
     Соединяет файл аннотаций и результатов работы детектора в один json файл
     добавляя при этом необходимые статистики
     """
-
+    print('Создаю файл')
     # Загружаем файл, созданный при помощи tools/test.py
     with open(str(result_pkl), 'rb') as pkl:
         data_pkl = pickle.load(pkl)
@@ -71,7 +72,7 @@ def statistic_2(result_pkl, annotation_json, out, iou_thr):
     with open(str(annotation_json)) as js:
         data_js = json.load(js)
         assert len(data_pkl) == len(data_js)
-
+        print('Вычисляю метрики')
         data_infos = []
         for i in range(len(data_js)):
 
@@ -128,12 +129,13 @@ def statistic_2(result_pkl, annotation_json, out, iou_thr):
     # Пишем результаты в json файл
     with open(str(out), 'w') as out_file:
         json.dump(data_js, out_file)
-
+  
 
 def plot_graphs(statistic_json, iou_thr, ignore_thr, graph_scale, work_dir):
     """
     Парсит файл со статистиками и отрисовывает необходимые графики
     """
+    print('Рисую графики')
     with open(str(statistic_json)) as st:
         stats = json.load(st)
         # Площадь всех ground_truth боксов
@@ -206,7 +208,76 @@ def plot_graphs(statistic_json, iou_thr, ignore_thr, graph_scale, work_dir):
     gt_area_plot.set_ylabel('Количество (log)', labelpad=20, weight='bold', size=12)
     gt_area_plot.figure.savefig(os.path.join(work_dir, 'unidentified_bbox_area.pdf'))
 
+    # ___________________График_истинных_к_нераспознанным______________________
+    fig = plt.figure(figsize=(18,8))
+    ax = fig.add_subplot()
 
+    ax.hist(df_gt_areas['gt_areas'], alpha=0.5, bins=200, color='red', label='ground_truth', log=True)
+    ax.hist(df_unidentified['unidentified'], alpha=1, bins=200, label='unidentified', log=True)
+
+    ax.legend(loc=1, fontsize=15)
+    ax.set_title('Истинные и нераспознанные боксы', weight='bold', size=20)
+    ax.set_xlabel('Площадь бокса', labelpad=20, weight='bold', size=12)
+    ax.set_ylabel('Количество (log)', labelpad=20, weight='bold', size=12)
+    #ax.set_xlim(0,1000)
+    plt.savefig(os.path.join(work_dir, 'Unidentified_to_ground_truth.pdf'))
+
+    # ___________________График_истинных_к_неверно_распознанным_________________
+    fig = plt.figure(figsize=(18,8))
+    ax = fig.add_subplot()
+
+    ax.hist(df_gt_areas['gt_areas'], alpha=0.5, bins=200, color='red', label='ground_truth', log=True)
+    ax.hist(df_negative['negative'], alpha=1, bins=200, label='negative', log=True)
+
+    ax.legend(loc=1, fontsize=15)
+    ax.set_title('Истинные и неверно распознанные боксы', weight='bold', size=20)
+    ax.set_xlabel('Площадь бокса', labelpad=20, weight='bold', size=12)
+    ax.set_ylabel('Количество (log)', labelpad=20, weight='bold', size=12)
+    #ax.set_xlim(0,1000)
+    plt.savefig(os.path.join(work_dir, 'Negative_to_ground_truth.pdf'))
+
+    # ___________________График_истинных_к_верно_распознанным__________________
+    fig = plt.figure(figsize=(18,8))
+    ax = fig.add_subplot()
+
+    ax.hist(df_gt_areas['gt_areas'], alpha=0.5, bins=200, color='red', label='ground_truth', log=True)
+    ax.hist(df_positive['positive'], alpha=0.7, bins=200, label='positive', log=True)
+
+    ax.legend(loc=1, fontsize=15)
+    ax.set_title('Истинные и верно распознанные боксы', weight='bold', size=20)
+    ax.set_xlabel('Площадь бокса', labelpad=20, weight='bold', size=12)
+    ax.set_ylabel('Количество (log)', labelpad=20, weight='bold', size=12)
+    #ax.set_xlim(0,1000)
+    plt.savefig(os.path.join(work_dir, 'Positive_to_ground_truth.pdf'))
+
+    print('Сохраняем метрики')
+    
+    
+    result_df = pd.DataFrame(index=['Total', 'TP', 'FP', 'FN', 'Precision', 'Recall'],
+                         columns=['[0:10]', '(10:20]', '(20:30]', '(30:50]', '(50:100]', '(100:150]', '(150:200]', '(200:500]', '>500'])
+
+    df_list = [df_gt_areas, df_positive, df_negative ,df_unidentified]   
+    
+
+    for i in range(len(df_list)):
+        result_df.iloc[i][0] = df_list[i][df_list[i] <= 10].count()[0]
+        result_df.iloc[i][1] = df_list[i][(df_list[i] > 10) & (df_list[i] <= 20)].count()[0]
+        result_df.iloc[i][2] = df_list[i][(df_list[i] > 20) & (df_list[i] <= 30)].count()[0]
+        result_df.iloc[i][3] = df_list[i][(df_list[i] > 30) & (df_list[i] <= 50)].count()[0]
+        result_df.iloc[i][4] = df_list[i][(df_list[i] > 50) & (df_list[i] <= 100)].count()[0]
+        result_df.iloc[i][5] = df_list[i][(df_list[i] > 100) & (df_list[i] <= 150)].count()[0]
+        result_df.iloc[i][6] = df_list[i][(df_list[i] > 150) & (df_list[i] <= 200)].count()[0]
+        result_df.iloc[i][7] = df_list[i][(df_list[i] > 200) & (df_list[i] <= 500)].count()[0]
+        result_df.iloc[i][8] = df_list[i][df_list[i] > 500].count()[0]
+    for j in range(len(result_df.columns)):
+        result_df.iloc[4][j] = round(result_df.iloc[1][j] / (result_df.iloc[1][j] + result_df.iloc[2][j]), 3)
+        result_df.iloc[5][j] = round(result_df.iloc[1][j] / (result_df.iloc[1][j] + result_df.iloc[3][j]), 3)
+
+    
+    result_df.to_csv(os.path.join(work_dir, 'result_metrics.csv'))
+
+    print('Готово')
+    
 def parse_args():
     parser = argparse.ArgumentParser(description='Сбор статистики площади отрисованных боксам')
     parser.add_argument('result_pkl', help='Файл с результатами, созданный tools/test.py')
