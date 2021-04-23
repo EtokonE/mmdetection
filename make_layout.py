@@ -57,14 +57,16 @@ if __name__ == '__main__':
                      work_dir=args.workdir,
                      video=args.video,
                      outdir=args.outdir,
-                     iou_thr=args.iou_thr)
+                     iou_thr=float(args.iou_thr))
 
     else:
-        for some_video in glob.glob(os.path.join(args.workdir, args.video)):
-            print(f'Started to process video {some_video}')
-            layout_video(config=args.config,
-                         checkpoint=args.checkpoint,
-                         work_dir=args.workdir,
-                         video=some_video,
-                         outdir=args.outdir,
-                         iou_thr=args.iou_thr)
+        for some_video in os.listdir(args.workdir):
+            if some_video.endswith(".mp4"):
+        #for some_video in glob.glob(os.path.join(args.workdir, args.video)):
+                print(f'Started to process video {some_video}')
+                layout_video(config=args.config,
+                            checkpoint=args.checkpoint,
+                            work_dir=args.workdir,
+                            video=some_video,
+                            outdir=args.outdir,
+                            iou_thr=float(args.iou_thr))
