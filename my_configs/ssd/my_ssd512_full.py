@@ -98,6 +98,7 @@ model = dict(
             basesize_ratio_range=(0.1, 0.9),
             # ---------------------------------------------------
 
+            # https://github.com/open-mmlab/mmdetection/blob/master/mmdet/core/anchor/anchor_generator.py
             # Шаги дефолт-боксов на нескольких уровнях функций по порядку (w, h)
             # По умолчанию base_sizes дефолт-боксов установлен в None =>
             # В этом случае за основные размеры дефолт-боксов отвечают как раз strides

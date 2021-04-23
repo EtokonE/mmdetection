@@ -5,10 +5,11 @@
 - **[my_configs](my_configs)** - Создаем конфиги
 - **[experiment](experiment)** - Сохраняем результаты
 - **Запуск на определенном GPU:** CUDA_VISIBLE_DEVICES={$GPU_NUMBER} ./tools/dist_train.sh {$CONFIG} {$GPU_COUNT}
+- **[tools/analysis_tools/statistics.py](tools/analysis_tools/statistics.py)** - Сбор статистики
  
 
 ### #TODO
-- [ ] Описать базовый конфиг SSD -> **[my_configs/ssd/my_ssd512_full.py](my_configs/ssd/my_ssd512_full.py)**
+- [x] Описать базовый конфиг SSD -> **[my_configs/ssd/my_ssd512_full.py](my_configs/ssd/my_ssd512_full.py)**
 
 
 
