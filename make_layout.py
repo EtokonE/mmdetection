@@ -1,4 +1,4 @@
-import os
+import glob, os
 import pandas as pd
 import numpy as np
 
@@ -51,9 +51,20 @@ def layout_video(config, checkpoint, work_dir, video, outdir, iou_thr):
 
 if __name__ == '__main__':
     args = parse_args()
-    layout_video(config=args.config,
-                 checkpoint=args.checkpoint,
-                 work_dir=args.workdir,
-                 video=args.video,
-                 outdir=args.outdir,
-                 iou_thr=args.iou_thr)
+    if args.video != '*.mp4':
+        layout_video(config=args.config,
+                     checkpoint=args.checkpoint,
+                     work_dir=args.workdir,
+                     video=args.video,
+                     outdir=args.outdir,
+                     iou_thr=args.iou_thr)
+
+    else:
+        for some_video in glob.glob(os.path.join(args.workdir, args.video)):
+            print(f'Started to process video {some_video}')
+            layout_video(config=args.config,
+                         checkpoint=args.checkpoint,
+                         work_dir=args.workdir,
+                         video=some_video,
+                         outdir=args.outdir,
+                         iou_thr=args.iou_thr)
