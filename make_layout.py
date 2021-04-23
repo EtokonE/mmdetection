@@ -1,11 +1,11 @@
 import os
-import cv2
+import pandas as pd
 import numpy as np
 
-from mmdet.apis import init_detector, inference_detector
 import mmcv
-import pandas as pd
+from mmdet.apis import init_detector, inference_detector
 
+import argparse
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Предварительная разметка видео. Результатом является csv файл с номером кадра и боксами на нем')
@@ -32,28 +32,24 @@ def layout_video(config, checkpoint, work_dir, video, outdir, iou_thr):
     unident[:] = np.nan
     count = 0
 
-    for i, frame in enumerate(mmcv.track_iter_progress(video_reader)):
+    for frame in mmcv.track_iter_progress(video_reader):
         result = inference_detector(model, frame)
         for i in range(len(result[0])):
             if result[0][0][4] < iou_thr:
-                layout.append(np.insert(unident, 0, i))
+                layout.append(np.insert(unident, 0, count))
                 break
             elif result[0][i][4] < iou_thr:
                 break
             elif result[0][i][4] >= iou_thr:
-                layout.append(np.insert(result[0][i], 0, i))
-        if i % 500 == 0:
-            print(i)
-            layout_df = pd.DataFrame(layout, columns=['frame', 'x1', 'y1', 'x2', 'y2', 'score'])
-            layout_df.to_csv(os.path.join(work_dir, csv_file))
-            print('test run')
-            break
+                layout.append(np.insert(result[0][i], 0, count))
+            else:
+                layout.append(np.insert(unident, 0, count))
+        count += 1
 
     layout_df = pd.DataFrame(layout, columns=['frame', 'x1', 'y1', 'x2', 'y2', 'score'])
     layout_df.to_csv(os.path.join(work_dir, csv_file), index=False)
 
 if __name__ == '__main__':
-    print('start')
     args = parse_args()
     layout_video(config=args.config,
                  checkpoint=args.checkpoint,
