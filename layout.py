@@ -5,6 +5,7 @@ import numpy as np
 from mmdet.apis import init_detector, inference_detector
 import mmcv
 import pandas as pd
+import argparse
 
 
 def parse_args():
@@ -21,7 +22,7 @@ def parse_args():
 def layout_video(config, checkpoint, work_dir, video, outdir, iou_thr):
 
     csv_file = str(video) + '_layout.csv'
-    model = init_detector(config, checkpoint)
+    model = init_detector(config, checkpoint, device='cuda:0')
 
     vidcap = cv2.VideoCapture(os.path.join(work_dir, video))
     frame = 0
@@ -33,14 +34,29 @@ def layout_video(config, checkpoint, work_dir, video, outdir, iou_thr):
     frame = 0
     while vidcap.isOpened():
         success, image = vidcap.read()
+        print('next image')
         if success:
             result = inference_detector(model, image)
             for i in range(len(result[0])):
                 if result[0][0][4] < iou_thr:
-                    layout.append(np.insert(unident, 0, count))
+                    layout.append(np.insert(unident, 0, frame))
+                    print('0< thr, added Nan')
                     break
-                elif b[0][i][4] >= iou_thr:
-                    layout.append(np.insert(result[0][i], 0, count))
+                elif result[0][i][4] < iou_thr:
+                    print('1<thr, break')
+                    break
+                elif result[0][i][4] >= iou_thr:
+                    layout.append(np.insert(result[0][i], 0, frame))
+                    print('!!!!>thr, added result')
+            if frame % 500 == 0:
+                print(frame)
+            frame += 1
+        else:
+            print('unsucces, break')
+            break
+
+    cv2.destroyAllWindows()
+    vidcap.release()
 
     layout_df = pd.DataFrame(layout, columns=['frame', 'x1', 'y1', 'x2', 'y2', 'score'])
     layout_df.to_csv(os.path.join(work_dir, csv_file))
@@ -99,3 +115,4 @@ if __name__ == '__main__':
                  video=args.video,
                  outdir=args.outdir,
                  iou_thr=args.iou_thr)
+    print('complete')
