@@ -33,17 +33,22 @@ count = 1
 
 
 def inference():
-    config_file = 'experiment/my_ssd_full.py'
+    config_file = 'experiment/my_ssd512_full.py'
     checkpoint_file = 'experiment/epoch_9.pth'
-
+    print(config_file)
     # build the model from a config file and a checkpoint file
     model = init_detector(config_file, checkpoint_file)
-
+    print('model loaded')
     # test a single image and show the results
     img = 'experiment/ch02_20210325114122-0.png'  # or img = mmcv.imread(img), which will only load it once
     result = inference_detector(model, img)
+    print('redult')
     # visualize the results in a new window
     model.show_result(img, result)
     # or save the visualization results to image files
     model.show_result(img, result, out_file='experiment/result.jpg')
-    print(result)
+    print(result[0][0])
+    
+if __name__ == '__main__':
+    print('start')
+    inference()
