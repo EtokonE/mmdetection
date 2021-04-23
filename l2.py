@@ -50,7 +50,7 @@ def layout_video(config, checkpoint, work_dir, video, outdir, iou_thr):
             break
 
     layout_df = pd.DataFrame(layout, columns=['frame', 'x1', 'y1', 'x2', 'y2', 'score'])
-    layout_df.to_csv(os.path.join(work_dir, csv_file))
+    layout_df.to_csv(os.path.join(work_dir, csv_file), index=False)
 
 if __name__ == '__main__':
     print('start')
