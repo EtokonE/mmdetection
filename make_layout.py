@@ -57,7 +57,7 @@ if __name__ == '__main__':
                      work_dir=args.workdir,
                      video=args.video,
                      outdir=args.outdir,
-                     iou_thr=float(args.iou_thr))
+                     iou_thr=args.iou_thr)
 
     else:
         for some_video in os.listdir(args.workdir):
