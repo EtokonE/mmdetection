@@ -28,25 +28,22 @@ def layout_video(config, checkpoint, work_dir, video, outdir, iou_thr):
     if not os.path.exists(outdir):
         os.mkdir(outdir)
     layout = []
-    unident = np.empty(5)
-    unident[:] = np.nan
     count = 0
 
     for frame in mmcv.track_iter_progress(video_reader):
         result = inference_detector(model, frame)
         for i in range(len(result[0])):
-            if result[0][0][4] < iou_thr:
-                layout.append(np.insert(unident, 0, count))
-                break
-            elif result[0][i][4] < iou_thr:
+            if result[0][i][4] < iou_thr:
                 break
             elif result[0][i][4] >= iou_thr:
-                layout.append(np.insert(result[0][i], 0, count))
-            else:
-                layout.append(np.insert(unident, 0, count))
+                layout.append(np.insert(result[0][i][:4], 0, count))
         count += 1
 
-    layout_df = pd.DataFrame(layout, columns=['frame', 'x1', 'y1', 'x2', 'y2', 'score'])
+    layout_df = pd.DataFrame(layout, columns=['frame', 'x', 'y2', 'x2', 'y'])
+    layout_df['w'] = abs(layout_df['x2'] - layout_df['x'])
+    layout_df['h'] = abs(layout_df['y2'] - layout_df['y'])
+    layout_df['logs'] = np.nan
+    layout_df = layout_df.drop(columns=['y2', 'x2'])
     layout_df.to_csv(os.path.join(work_dir, csv_file), index=False)
 
 if __name__ == '__main__':
