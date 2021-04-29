@@ -22,9 +22,9 @@ def layout_video(config, checkpoint, work_dir, video, outdir, iou_thr):
 
     csv_file = str(video) + '_layout.csv'
     model = init_detector(config, checkpoint, device='cuda:0')
-
+    print(os.path.join(work_dir, video))
     video_reader = mmcv.VideoReader(os.path.join(work_dir, video))
-
+    print(video_reader._frame_cnt)
     if not os.path.exists(outdir):
         os.mkdir(outdir)
     layout = []
@@ -44,6 +44,7 @@ def layout_video(config, checkpoint, work_dir, video, outdir, iou_thr):
     layout_df['h'] = abs(layout_df['y2'] - layout_df['y'])
     layout_df['logs'] = np.nan
     layout_df = layout_df.drop(columns=['y2', 'x2'])
+    layout_df = layout_df.astype({'frame' : 'int32', 'x' : 'int32', 'y' : 'int32', 'w' : 'int32', 'h' : 'int32'}) 
     layout_df.to_csv(os.path.join(work_dir, csv_file), index=False)
 
 if __name__ == '__main__':
@@ -66,4 +67,4 @@ if __name__ == '__main__':
                             work_dir=args.workdir,
                             video=some_video,
                             outdir=args.outdir,
-                            iou_thr=float(args.iou_thr))
+                            iou_thr=args.iou_thr)
