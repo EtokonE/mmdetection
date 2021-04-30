@@ -169,7 +169,6 @@ def plot_graphs(statistic_json, confidence, ignore_thr, graph_scale, work_dir):
         df_positive = pd.DataFrame({'positive': positive_bbox_area})
         df_negative = pd.DataFrame({'negative': negative_bbox_area})
         df_unidentified = pd.DataFrame({'unidentified': unidentified})
-
     # _________________График_правильно_отрисованных_боксов_______________
     gt_area_plot = df_positive.plot.hist(bins=200,
                                          log=True,
@@ -275,7 +274,7 @@ def plot_graphs(statistic_json, confidence, ignore_thr, graph_scale, work_dir):
         result_df.iloc[4][j] = round(result_df.iloc[1][j] / (result_df.iloc[1][j] + result_df.iloc[2][j]), 3)
         result_df.iloc[5][j] = round(result_df.iloc[1][j] / (result_df.iloc[1][j] + result_df.iloc[3][j]), 3)
 
-    result_df.to_csv(os.path.join(work_dir, 'result_metrics.csv'))
+    result_df.to_csv(os.path.join(work_dir, f'result_metrics_{str(confidence)}.csv'))
 
     print('Готово')
 
@@ -302,12 +301,12 @@ def main():
         result_pkl=args.result_pkl,
         annotation_json=args.annotations,
         out=args.out,
-        confidence=args.confidence
+        confidence=float(args.confidence)
     )
     # Сохраняем графики
     plot_graphs(
         statistic_json=args.out,
-        confidence=args.confidence,
+        confidence=float(args.confidence),
         ignore_thr=args.ignore_thr,
         graph_scale=args.graph_scale,
         work_dir=args.workdir
