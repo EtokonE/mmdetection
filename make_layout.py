@@ -49,15 +49,7 @@ def layout_video(config, checkpoint, work_dir, video, outdir, iou_thr):
 
 if __name__ == '__main__':
     args = parse_args()
-    if args.video != '*.mp4':
-        layout_video(config=args.config,
-                     checkpoint=args.checkpoint,
-                     work_dir=args.workdir,
-                     video=args.video,
-                     outdir=args.outdir,
-                     iou_thr=args.iou_thr)
-
-    else:
+    if args.video == '*.mp4':
         for some_video in os.listdir(args.workdir):
             if some_video.endswith(".mp4"):
         #for some_video in glob.glob(os.path.join(args.workdir, args.video)):
@@ -68,3 +60,11 @@ if __name__ == '__main__':
                             video=some_video,
                             outdir=args.outdir,
                             iou_thr=args.iou_thr)
+
+    else:       
+        layout_video(config=args.config,
+                     checkpoint=args.checkpoint,
+                     work_dir=args.workdir,
+                     video=args.video,
+                     outdir=args.outdir,
+                     iou_thr=args.iou_thr)
