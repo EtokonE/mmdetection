@@ -4,8 +4,8 @@ from glob import glob
 # Корневая директория
 
 #data_root = '/home/user/Documents/Kalinin/Data/full_data/'
-data_root = '/home/user/server/home/d.grushevskaya1/projects/dron_maks/full_data/annotation/'
-#data_root = '/home/dron_maks/full_data/annotation/'
+#data_root = '/home/user/server/home/d.grushevskaya1/projects/dron_maks/full_data/annotation/'
+data_root = '/home/dron_maks/full_data/annotation/'
 # Определить тестовые и валидационные файлы вручную
 TEST_FILES =[data_root + 'ch01_20200703110241-part 00000.json']
 	
