@@ -1,3 +1,20 @@
+## Описание
+- **[mmdet/datasets/my_dataset.py](mmdet/datasets/my_dataset.py)** - Создаем кастомный датасет
+- **[mmdet/datasets/__init__.py](mmdet/datasets/__init__.py)** - Регистрируем кастомный датасет
+- **[define_anno.py](define_anno.py)** - Определяем данные, используемые для Обучения, Валидации и Тестирования
+- **[my_configs](my_configs)** - Создаем конфиги
+- **[experiment](experiment)** - Сохраняем результаты
+- **Запуск на определенном GPU:** CUDA_VISIBLE_DEVICES={$GPU_NUMBER} ./tools/dist_train.sh {$CONFIG} {$GPU_COUNT}
+- **[tools/analysis_tools/statistics.py](tools/analysis_tools/statistics.py)** - Сбор статистики
+- **[make_layout.py](make_layout.py)** - Предварительная разметка
+
+  
+
+### #TODO
+- [x] Описать базовый конфиг SSD -> **[my_configs/ssd/my_ssd512_full.py](my_configs/ssd/my_ssd512_full.py)**
+
+
+
 <div align="center">
   <img src="resources/mmdet-logo.png" width="600"/>
 </div>
@@ -44,7 +61,7 @@ This project is released under the [Apache 2.0 license](LICENSE).
 
 ## Changelog
 
-v2.10.0 was released in 01/03/2021.
+v2.11.0 was released in 01/04/2021.
 Please refer to [changelog.md](docs/changelog.md) for details and release history.
 A comparison between v1.x and v2.0 codebases can be found in [compatibility.md](docs/compatibility.md).
 

@@ -115,7 +115,11 @@ data
 *.log.json
 work_dirs/
 experiment/
+<<<<<<< HEAD
 ssd_results/
+=======
+check_coco_dataset.py
+>>>>>>> 7a4d353586e1b8ffdedcd301ced14c2160f1d355
 # Pytorch
 *.pth
 *.py~
