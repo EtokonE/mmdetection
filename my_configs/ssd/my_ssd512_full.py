@@ -1,3 +1,5 @@
+import sys
+sys.path.insert(1, '/home/user/server/home/d.grushevskaya1/projects/dron_maks/mmdetection')
 from define_anno import TRAIN_FILES, TEST_FILES, VAL_FILES, data_root
 
 print(f'TRAIN FILES: {TRAIN_FILES}')
@@ -136,7 +138,7 @@ data = dict(
             ]),
     val=dict(
         type=dataset_type,
-        ann_file= VAL_FILES, 
+        ann_file= str(VAL_FILES[0]), 
         img_prefix=data_root,
         pipeline=[
             dict(type='LoadImageFromFile'),
@@ -157,7 +159,7 @@ data = dict(
         ]),
     test=dict(
         type=dataset_type,
-        ann_file=TEST_FILES, 
+        ann_file=str(TEST_FILES[0]), 
         img_prefix=data_root,
         pipeline=[
             dict(type='LoadImageFromFile'),
