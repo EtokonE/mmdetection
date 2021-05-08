@@ -1,11 +1,11 @@
 TRAIN_FILES = [
-    'ch01_20200605121410-part 00000.json'
+    '/home/user/server/home/d.grushevskaya1/projects/dron_maks/data/full_data/ch01_20200605121410-part 00000.json'
 ]
 TEST_FILES = [
-    'ch02_20200605114152-part 00000.json'
+    '/home/user/server/home/d.grushevskaya1/projects/dron_maks/data/full_data/ch02_20200605114152-part 00000.json'
 ]
 VAL_FILES = [
-    'ch02_20200605121548-part 00000.json'
+    '/home/user/server/home/d.grushevskaya1/projects/dron_maks/data/full_data/ch02_20200605121548-part 00000.json'
 ]
 data_root = '/home/user/server/home/d.grushevskaya1/projects/dron_maks/data/full_data/'
 input_size = 512
@@ -99,11 +99,11 @@ test_pipeline = [
         ])
 ]
 data = dict(
-    samples_per_gpu=32,
-    workers_per_gpu=3,
+    samples_per_gpu=8,
+    workers_per_gpu=2,
     train=dict(
         type='MyDataset',
-        ann_file=data_root+TRAIN_FILES,
+        ann_file=TRAIN_FILES,
         img_prefix=data_root,
         pipeline=[
             dict(type='LoadImageFromFile', to_float32=True),
@@ -130,7 +130,7 @@ data = dict(
         ]),
     val=dict(
         type='MyDataset',
-        ann_file=data_root+VAL_FILES,
+        ann_file=VAL_FILES,
         img_prefix=data_root,
         pipeline=[
             dict(type='LoadImageFromFile'),
@@ -151,7 +151,7 @@ data = dict(
         ]),
     test=dict(
         type='MyDataset',
-        ann_file=data_root+TEST_FILES,
+        ann_file=TEST_FILES,
         img_prefix=data_root,
         pipeline=[
             dict(type='LoadImageFromFile'),
