@@ -402,7 +402,7 @@ class SSDAnchorGenerator(AnchorGenerator):
                     f'{basesize_ratio_range[0]}.')
         elif self.input_size == 512:
             if basesize_ratio_range[0] == 0.1:  # SSD512 COCO
-                min_sizes.insert(0, int(self.input_size * 2 / 100))
+                min_sizes.insert(0, int(self.input_size * 4 / 100))
                 max_sizes.insert(0, int(self.input_size * 10 / 100))
             elif basesize_ratio_range[0] == 0.15:  # SSD512 VOC
                 min_sizes.insert(0, int(self.input_size * 7 / 100))
