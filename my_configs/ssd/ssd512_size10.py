@@ -208,25 +208,27 @@ img_norm_cfg = dict(mean=[123.675, 116.28, 103.53], std=[1, 1, 1], to_rgb=True)
 
 # https://mmdetection.readthedocs.io/en/latest/_modules/mmdet/datasets/pipelines/transforms.html
 train_pipeline = [
-    dict(type='LoadImageFromFile', to_float32=True),  # Загрузка изображений из пути к файлу
-    dict(type='LoadAnnotations', with_bbox=True),  # Загрузка аннотаций к текущему изображению
-    dict(type='Resize', img_scale=(512, 512), keep_ratio=False),  # Изменяем размер входного изображения
+    dict(type='LoadImageFromFile', to_float32=True), # First pipeline to load images from file path
+    dict(type='LoadAnnotations', with_bbox=True),  # Second pipeline to load annotations for current image
+
+    dict(type='Resize', img_scale=(512, 512), keep_ratio=True), # Augmentation pipeline that resize the images and their annotations
     dict(
-        type='Normalize',  # Нормализация
+        type='Normalize', 
         mean=[123.675, 116.28, 103.53],
         std=[1, 1, 1],
-        to_rgb=True),
-    dict(type='DefaultFormatBundle'),  # Пакет формата по умолчанию для сбора данных в конвейере
-    dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels'])  # Собираем в пайплайн необходимые ключи
+        to_rgb=True), # Augmentation pipeline that normalize the input images
+    dict(type='RandomFlip', flip_ratio=0.1), # Augmentation pipeline that flip the images and their annotations (SMALL)
+    dict(type='DefaultFormatBundle'), # Default format bundle to gather data in the pipeline
+    dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels'])   # Pipeline that decides which keys in the data should be passed to the detector
 ]
 test_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(
-        type='MultiScaleFlipAug',  # Инкапсуляция тестовых аугментаций
+        type='MultiScaleF lipAug', # An encapsulation that encapsulates the testing augmentations
         img_scale=(512, 512),
         flip=False,
         transforms=[
-            dict(type='Resize', keep_ratio=False),
+            dict(type='Resize', keep_ratio=True),
             dict(
                 type='Normalize',
                 mean=[123.675, 116.28, 103.53],
@@ -237,27 +239,28 @@ test_pipeline = [
         ])
 ]
 data = dict(
-    samples_per_gpu=32,  # Batch size of a single GPU
-    workers_per_gpu=3,  # Worker to pre-fetch data for each single GPU
+    samples_per_gpu=32, # Batch size of a single GPU
+    workers_per_gpu=3, # Worker to pre-fetch data for each single GPU
     train=dict(
             type=dataset_type,
-            ann_file=TRAIN_FILES,
-            img_prefix=data_root,
+            ann_file= TRAIN_FILES, 
+            img_prefix= data_root,
             pipeline=[
                 dict(type='LoadImageFromFile', to_float32=True),
                 dict(type='LoadAnnotations', with_bbox=True),
-                dict(type='Resize', img_scale=(512, 512), keep_ratio=False),
+                dict(type='Resize', img_scale=(512, 512), keep_ratio=True),
                 dict(
                     type='Normalize',
                     mean=[123.675, 116.28, 103.53],
                     std=[1, 1, 1],
                     to_rgb=True),
+                dict(type='RandomFlip', flip_ratio=0.1),
                 dict(type='DefaultFormatBundle'),
                 dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels'])
             ]),
     val=dict(
         type=dataset_type,
-        ann_file=VAL_FILES,
+        ann_file= VAL_FILES, 
         img_prefix=data_root,
         pipeline=[
             dict(type='LoadImageFromFile'),
@@ -266,7 +269,7 @@ data = dict(
                 img_scale=(512, 512),
                 flip=False,
                 transforms=[
-                    dict(type='Resize', keep_ratio=False),
+                    dict(type='Resize', keep_ratio=True),
                     dict(
                         type='Normalize',
                         mean=[123.675, 116.28, 103.53],
@@ -287,7 +290,7 @@ data = dict(
                 img_scale=(512, 512),
                 flip=False,
                 transforms=[
-                    dict(type='Resize', keep_ratio=False),
+                    dict(type='Resize', keep_ratio=True),
                     dict(
                         type='Normalize',
                         mean=[123.675, 116.28, 103.53],
