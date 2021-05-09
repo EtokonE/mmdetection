@@ -91,7 +91,7 @@ def statistic_2(result_pkl, annotation_json, out, confidence):
                     abs((data_js[i]['ann']['bboxes'][num_bbox][0] - data_js[i]['ann']['bboxes'][num_bbox][2]) * (
                             data_js[i]['ann']['bboxes'][num_bbox][1] - data_js[i]['ann']['bboxes'][num_bbox][3])))
 
-            for j in range(len_data_pkl):
+            for j in range(len(data_pkl[i][0])):
                 # Проверяем порог истинности бокса
                 if data_pkl[i][0][j][4] < confidence:
                     break
