@@ -39,7 +39,7 @@ def layout_video(config, checkpoint, work_dir, video, outdir, iou_thr):
                 layout.append(np.insert(result[0][i][:4], 0, count))
         count += 1
 
-    layout_df = pd.DataFrame(layout, columns=['frame', 'x', 'y2', 'x2', 'y'])
+    layout_df = pd.DataFrame(layout, columns=['frame', 'x', 'y', 'x2', 'y2'])
     layout_df['w'] = abs(layout_df['x2'] - layout_df['x'])
     layout_df['h'] = abs(layout_df['y2'] - layout_df['y'])
     layout_df['logs'] = np.nan
