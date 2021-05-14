@@ -59,12 +59,16 @@ def get_iou(bb1, bb2):
     return iou
 
 
-def statistic_2(result_pkl, annotation_json, out, confidence):
+def statistic_2(result_pkl, annotation_json, out, confidence, work_dir):
     """
     Соединяет файл аннотаций и результатов работы детектора в один json файл
     добавляя при этом необходимые статистики
     """
     print('Создаю файл')
+
+    if not os.path.exists(work_dir):
+        os.makedirs(work_dir)
+    
     # Загружаем файл, созданный при помощи tools/test.py
     with open(str(result_pkl), 'rb') as pkl:
         data_pkl = pickle.load(pkl)
@@ -301,7 +305,8 @@ def main():
         result_pkl=args.result_pkl,
         annotation_json=args.annotations,
         out=args.out,
-        confidence=float(args.confidence)
+        confidence=float(args.confidence),
+        work_dir=args.workdir
     )
     # Сохраняем графики
     plot_graphs(
