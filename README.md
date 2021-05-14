@@ -8,10 +8,6 @@
 - **[tools/analysis_tools/statistics.py](tools/analysis_tools/statistics.py)** - Сбор статистики
 - **[make_layout.py](make_layout.py)** - Предварительная разметка
 
-  
-
-### #TODO
-- [x] Описать базовый конфиг SSD -> **[my_configs/ssd/my_ssd512_full.py](my_configs/ssd/my_ssd512_full.py)**
 
 
 
