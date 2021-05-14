@@ -190,8 +190,8 @@ optimizer_config = dict(grad_clip=dict(max_norm=35, norm_type=2))
 lr_config = dict(
     policy='step',
     warmup='linear',
-    warmup_iters=0,
-    warmup_ratio=0,
+    warmup_iters=1,
+    warmup_ratio=0.01
     step=[15, 30])
 runner = dict(type='EpochBasedRunner', max_epochs=40)
 evaluation = dict(interval=1, metric='mAP')
