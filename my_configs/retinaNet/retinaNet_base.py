@@ -1,4 +1,15 @@
-Config:
+# retinanet_r101_fpn_1x_coco.py
+
+from define_anno import TRAIN_FILES, TEST_FILES, VAL_FILES, data_root
+
+print(f'TRAIN FILES: {TRAIN_FILES}')
+print(f'VAL FILES: {VAL_FILES}')
+print(f'TEST FILES: {TEST_FILES}')
+
+num_classes = 1
+dataset_type = 'MyDataset'
+work_dir = './experiment/RetinaNet/retinaNet_r101_base'
+
 model = dict(
     type='RetinaNet',
     pretrained='torchvision://resnet101',
@@ -20,7 +31,7 @@ model = dict(
         num_outs=5),
     bbox_head=dict(
         type='RetinaHead',
-        num_classes=80,
+        num_classes=num_classes,
         in_channels=256,
         stacked_convs=4,
         feat_channels=256,
@@ -57,8 +68,6 @@ model = dict(
         score_thr=0.05,
         nms=dict(type='nms', iou_threshold=0.5),
         max_per_img=100))
-dataset_type = 'CocoDataset'
-data_root = 'data/coco/'
 img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 train_pipeline = [
@@ -95,12 +104,12 @@ test_pipeline = [
         ])
 ]
 data = dict(
-    samples_per_gpu=2,
+    samples_per_gpu=32,
     workers_per_gpu=2,
     train=dict(
-        type='CocoDataset',
-        ann_file='data/coco/annotations/instances_train2017.json',
-        img_prefix='data/coco/train2017/',
+        type=dataset_type,
+        ann_file=TRAIN_FILES,
+        img_prefix=data_root,
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(type='LoadAnnotations', with_bbox=True),
@@ -116,9 +125,9 @@ data = dict(
             dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels'])
         ]),
     val=dict(
-        type='CocoDataset',
-        ann_file='data/coco/annotations/instances_val2017.json',
-        img_prefix='data/coco/val2017/',
+        type=dataset_type,
+        ann_file=VAL_FILES,
+        img_prefix=data_root,
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(
@@ -139,9 +148,9 @@ data = dict(
                 ])
         ]),
     test=dict(
-        type='CocoDataset',
-        ann_file='data/coco/annotations/instances_val2017.json',
-        img_prefix='data/coco/val2017/',
+        type=dataset_type,
+        ann_file=TEST_FILES,
+        img_prefix=data_root,
         pipeline=[
             dict(type='LoadImageFromFile'),
             dict(
@@ -161,7 +170,7 @@ data = dict(
                     dict(type='Collect', keys=['img'])
                 ])
         ]))
-evaluation = dict(interval=1, metric='bbox')
+evaluation = dict(interval=1, metric='mAP')
 optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0001)
 optimizer_config = dict(grad_clip=None)
 lr_config = dict(
@@ -172,11 +181,12 @@ lr_config = dict(
     step=[8, 11])
 runner = dict(type='EpochBasedRunner', max_epochs=12)
 checkpoint_config = dict(interval=1)
-log_config = dict(interval=50, hooks=[dict(type='TextLoggerHook')])
+log_config = dict(interval=1, hooks=[dict(type='TextLoggerHook'), dict(type='TensorboardLoggerHook')])
 custom_hooks = [dict(type='NumClassCheckHook')]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-load_from = None
+load_from = 'http://download.openmmlab.com/mmdetection/v2.0/retinanet/retinanet_r101_fpn_1x_coco/retinanet_r101_fpn_1x_coco_20200130-7a93545f.pth'
 resume_from = None
 workflow = [('train', 1)]
+
 
