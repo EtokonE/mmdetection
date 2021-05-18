@@ -185,7 +185,7 @@ data = dict(
                     dict(type='Collect', keys=['img'])
                 ])
         ],
-        samples_per_gpu=10,))
+        samples_per_gpu=36,))
 optimizer = dict(type='SGD', lr=0.001, momentum=0.9, weight_decay=0.0005)
 optimizer_config = dict(grad_clip=dict(max_norm=35, norm_type=2))
 lr_config = dict(
