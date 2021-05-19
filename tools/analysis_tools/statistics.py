@@ -182,7 +182,7 @@ def plot_graphs(statistic_json, confidence, ignore_thr, graph_scale, work_dir):
     gt_area_plot.set_title('Распределения площади правильно предсказанных боксов', weight='bold', size=20)
     gt_area_plot.set_xlabel('Площадь бокса', labelpad=20, weight='bold', size=12)
     gt_area_plot.set_ylabel('Количество (log)', labelpad=20, weight='bold', size=12)
-    gt_area_plot.figure.savefig(os.path.join(work_dir, 'positive_area.pdf'))
+    gt_area_plot.figure.savefig(os.path.join(work_dir, 'positive_area.png'))
 
     # _________________График_ошибочно_предсказанных_боксов________________
     gt_area_plot = df_negative.plot.hist(bins=200,
@@ -192,7 +192,7 @@ def plot_graphs(statistic_json, confidence, ignore_thr, graph_scale, work_dir):
     gt_area_plot.set_title('Распределения площади ошибочно предсказанных боксов', weight='bold', size=20)
     gt_area_plot.set_xlabel('Площадь бокса', labelpad=20, weight='bold', size=12)
     gt_area_plot.set_ylabel('Количество (log)', labelpad=20, weight='bold', size=12)
-    gt_area_plot.figure.savefig(os.path.join(work_dir, 'negative_area.pdf'))
+    gt_area_plot.figure.savefig(os.path.join(work_dir, 'negative_area.png'))
 
     # ___________________График_истинных_боксов____________________________
     gt_area_plot = df_gt_areas['gt_areas'].plot.hist(bins=200,
@@ -201,7 +201,7 @@ def plot_graphs(statistic_json, confidence, ignore_thr, graph_scale, work_dir):
     gt_area_plot.set_title('Распределения площади истинных боксов', weight='bold', size=20)
     gt_area_plot.set_xlabel('Площадь бокса', labelpad=20, weight='bold', size=12)
     gt_area_plot.set_ylabel('Количество (log)', labelpad=20, weight='bold', size=12)
-    gt_area_plot.figure.savefig(os.path.join(work_dir, 'gt_area.pdf'))
+    gt_area_plot.figure.savefig(os.path.join(work_dir, 'gt_area.png'))
 
     # ___________________График_проигнорированных_боксов_______________________
     gt_area_plot = df_unidentified.astype(float).plot.hist(bins=200,
@@ -212,7 +212,7 @@ def plot_graphs(statistic_json, confidence, ignore_thr, graph_scale, work_dir):
                            weight='bold', size=20)
     gt_area_plot.set_xlabel('Площадь бокса', labelpad=20, weight='bold', size=12)
     gt_area_plot.set_ylabel('Количество (log)', labelpad=20, weight='bold', size=12)
-    gt_area_plot.figure.savefig(os.path.join(work_dir, 'unidentified_bbox_area.pdf'))
+    gt_area_plot.figure.savefig(os.path.join(work_dir, 'unidentified_bbox_area.png'))
 
     # ___________________График_истинных_к_нераспознанным______________________
     fig = plt.figure(figsize=(18, 8))
@@ -226,7 +226,7 @@ def plot_graphs(statistic_json, confidence, ignore_thr, graph_scale, work_dir):
     ax.set_xlabel('Площадь бокса', labelpad=20, weight='bold', size=12)
     ax.set_ylabel('Количество (log)', labelpad=20, weight='bold', size=12)
     # ax.set_xlim(0,1000)
-    plt.savefig(os.path.join(work_dir, 'Unidentified_to_ground_truth.pdf'))
+    plt.savefig(os.path.join(work_dir, 'Unidentified_to_ground_truth.png'))
 
     # ___________________График_истинных_к_неверно_распознанным_________________
     fig = plt.figure(figsize=(18, 8))
@@ -240,7 +240,7 @@ def plot_graphs(statistic_json, confidence, ignore_thr, graph_scale, work_dir):
     ax.set_xlabel('Площадь бокса', labelpad=20, weight='bold', size=12)
     ax.set_ylabel('Количество (log)', labelpad=20, weight='bold', size=12)
     # ax.set_xlim(0,1000)
-    plt.savefig(os.path.join(work_dir, 'Negative_to_ground_truth.pdf'))
+    plt.savefig(os.path.join(work_dir, 'Negative_to_ground_truth.png'))
 
     # ___________________График_истинных_к_верно_распознанным__________________
     fig = plt.figure(figsize=(18, 8))
