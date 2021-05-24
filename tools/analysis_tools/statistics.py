@@ -222,7 +222,7 @@ def plot_graphs(statistic_json, confidence, ignore_thr, graph_scale, work_dir):
     ax.hist(df_unidentified['unidentified'], alpha=1, bins=200, label='unidentified', log=True)
 
     ax.legend(loc=1, fontsize=15)
-    ax.set_title('Истинные и нераспознанные боксы', weight='bold', size=20)
+    ax.set_title('Истинные и нераспознанные боксы FN', weight='bold', size=20)
     ax.set_xlabel('Площадь бокса', labelpad=20, weight='bold', size=12)
     ax.set_ylabel('Количество (log)', labelpad=20, weight='bold', size=12)
     ax.set_xlim(0,graph_scale)
@@ -236,7 +236,7 @@ def plot_graphs(statistic_json, confidence, ignore_thr, graph_scale, work_dir):
     ax.hist(df_negative['negative'], alpha=1, bins=200, label='negative', log=True)
 
     ax.legend(loc=1, fontsize=15)
-    ax.set_title('Истинные и неверно распознанные боксы', weight='bold', size=20)
+    ax.set_title('Истинные и неверно распознанные боксы FP', weight='bold', size=20)
     ax.set_xlabel('Площадь бокса', labelpad=20, weight='bold', size=12)
     ax.set_ylabel('Количество (log)', labelpad=20, weight='bold', size=12)
     ax.set_xlim(0,graph_scale)
@@ -313,7 +313,7 @@ def main():
         statistic_json=args.out,
         confidence=float(args.confidence),
         ignore_thr=args.ignore_thr,
-        graph_scale=args.graph_scale,
+        graph_scale=int(args.graph_scale),
         work_dir=args.workdir
     )
 
