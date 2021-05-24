@@ -225,7 +225,7 @@ def plot_graphs(statistic_json, confidence, ignore_thr, graph_scale, work_dir):
     ax.set_title('Истинные и нераспознанные боксы', weight='bold', size=20)
     ax.set_xlabel('Площадь бокса', labelpad=20, weight='bold', size=12)
     ax.set_ylabel('Количество (log)', labelpad=20, weight='bold', size=12)
-    # ax.set_xlim(0,1000)
+    ax.set_xlim(0,graph_scale)
     plt.savefig(os.path.join(work_dir, 'Unidentified_to_ground_truth.png'))
 
     # ___________________График_истинных_к_неверно_распознанным_________________
@@ -239,7 +239,7 @@ def plot_graphs(statistic_json, confidence, ignore_thr, graph_scale, work_dir):
     ax.set_title('Истинные и неверно распознанные боксы', weight='bold', size=20)
     ax.set_xlabel('Площадь бокса', labelpad=20, weight='bold', size=12)
     ax.set_ylabel('Количество (log)', labelpad=20, weight='bold', size=12)
-    # ax.set_xlim(0,1000)
+    ax.set_xlim(0,graph_scale)
     plt.savefig(os.path.join(work_dir, 'Negative_to_ground_truth.png'))
 
     # ___________________График_истинных_к_верно_распознанным__________________
@@ -253,7 +253,7 @@ def plot_graphs(statistic_json, confidence, ignore_thr, graph_scale, work_dir):
     ax.set_title('Истинные и верно распознанные боксы', weight='bold', size=20)
     ax.set_xlabel('Площадь бокса', labelpad=20, weight='bold', size=12)
     ax.set_ylabel('Количество (log)', labelpad=20, weight='bold', size=12)
-    # ax.set_xlim(0,1000)
+    ax.set_xlim(0,graph_scale)
     plt.savefig(os.path.join(work_dir, 'Positive_to_ground_truth.pdf'))
 
     print('Сохраняем метрики')
