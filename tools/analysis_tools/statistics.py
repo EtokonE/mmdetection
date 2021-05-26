@@ -233,7 +233,7 @@ def plot_graphs(statistic_json, confidence, ignore_thr, graph_scale, work_dir):
     ax = fig.add_subplot()
 
     ax.hist(df_gt_areas['gt_areas'], alpha=0.5, bins=200, color='red', label='ground_truth', log=True)
-    ax.hist(df_negative['negative'], alpha=1, bins=200, label='negative', log=True)
+    ax.hist(df_negative['negative'], alpha=1, bins=500, label='negative', log=True)
 
     ax.legend(loc=1, fontsize=15)
     ax.set_title('Истинные и неверно распознанные боксы FP', weight='bold', size=20)
