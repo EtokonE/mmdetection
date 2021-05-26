@@ -15,7 +15,7 @@ log_level = 'INFO'
 load_from = 'http://download.openmmlab.com/mmdetection/v2.0/yolo/yolov3_d53_mstrain-608_273e_coco/yolov3_d53_mstrain-608_273e_coco-139f5633.pth'
 resume_from = None #'/home/dron_maks/mmdetection/experiment/yolo/yolo608_base/epoch_5.pth'
 workflow = [('train', 1)]
-work_dir = './experiment/yolo/yolo608_Size'
+work_dir = './experiment/yolo/yolo608_SizeAug'
 model = dict(
     type='YOLOV3',
     pretrained='open-mmlab://darknet53',
@@ -102,7 +102,7 @@ test_pipeline = [
         ])
 ]
 data = dict(
-    samples_per_gpu=10,
+    samples_per_gpu=11,
     workers_per_gpu=2,
     train=dict(
         type=dataset_type,
