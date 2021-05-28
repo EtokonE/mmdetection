@@ -1,7 +1,4 @@
-"""
-Изменены размеры якорных боксов, убраны лишние аугментации, снижены пороги Confidence до 0.25
-"""
-
+# Изменены размеры якорных боксов и порог confidence yf 0.3
 
 from define_anno import TRAIN_FILES, TEST_FILES, VAL_FILES, data_root
 
@@ -18,7 +15,7 @@ log_level = 'INFO'
 load_from = 'http://download.openmmlab.com/mmdetection/v2.0/yolo/yolov3_d53_mstrain-608_273e_coco/yolov3_d53_mstrain-608_273e_coco-139f5633.pth'
 resume_from = None #'/home/dron_maks/mmdetection/experiment/yolo/yolo608_base/epoch_5.pth'
 workflow = [('train', 1)]
-work_dir = './experiment/yolo/yolo_lowSize'
+work_dir = './experiment/yolo/yolo608_SizeConfLR'
 model = dict(
     type='YOLOV3',
     pretrained='open-mmlab://darknet53',
@@ -37,7 +34,7 @@ model = dict(
             type='YOLOAnchorGenerator',
             base_sizes=[[(80, 90), (156, 198), (200, 200)],
                         [(20, 51), (45, 20), (50, 79)],
-                        [(6, 9), (10, 10), (16, 16)]],
+                        [(6, 8), (10, 10), (16, 16)]],
             strides=[32, 16, 8]),
         bbox_coder=dict(type='YOLOBBoxCoder'),
         featmap_strides=[32, 16, 8],
@@ -60,8 +57,8 @@ model = dict(
     train_cfg=dict(
         assigner=dict(
             type='GridAssigner',
-            pos_iou_thr=0.25,
-            neg_iou_thr=0.25,
+            pos_iou_thr=0.3,
+            neg_iou_thr=0.3,
             min_pos_iou=0)),
     test_cfg=dict(
         nms_pre=1000,
@@ -76,13 +73,14 @@ img_norm_cfg = dict(mean=[0, 0, 0], std=[255.0, 255.0, 255.0], to_rgb=True)
 train_pipeline = [
     dict(type='LoadImageFromFile', to_float32=True),
     dict(type='LoadAnnotations', with_bbox=True),
+    dict(type='PhotoMetricDistortion'),
     dict(type='Resize', img_scale=[(320, 320), (608, 608)], keep_ratio=True),
+    dict(type='RandomFlip', flip_ratio=0.01),
     dict(
         type='Normalize',
         mean=[0, 0, 0],
         std=[255.0, 255.0, 255.0],
         to_rgb=True),
-	dict(type='Pad', size_divisor=32),
     dict(type='DefaultFormatBundle'),
     dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels'])
 ]
@@ -94,12 +92,12 @@ test_pipeline = [
         flip=False,
         transforms=[
             dict(type='Resize', keep_ratio=True),
+            dict(type='RandomFlip'),
             dict(
                 type='Normalize',
                 mean=[0, 0, 0],
                 std=[255.0, 255.0, 255.0],
                 to_rgb=True),
-            dict(type='Pad', size_divisor=32),
             dict(type='ImageToTensor', keys=['img']),
             dict(type='Collect', keys=['img'])
         ])
@@ -114,10 +112,12 @@ data = dict(
         pipeline=[
             dict(type='LoadImageFromFile', to_float32=True),
             dict(type='LoadAnnotations', with_bbox=True),
+            dict(type='PhotoMetricDistortion'),
             dict(
                 type='Resize',
                 img_scale=[(320, 320), (608, 608)],
                 keep_ratio=True),
+            dict(type='RandomFlip', flip_ratio=0.01),
             dict(
                 type='Normalize',
                 mean=[0, 0, 0],
@@ -136,14 +136,16 @@ data = dict(
             dict(
                 type='MultiScaleFlipAug',
                 img_scale=(608, 608),
+                flip=False,
                 transforms=[
                     dict(type='Resize', keep_ratio=True),
+                    dict(type='RandomFlip'),
                     dict(
                         type='Normalize',
                         mean=[0, 0, 0],
                         std=[255.0, 255.0, 255.0],
                         to_rgb=True),
-					dict(type='Pad', size_divisor=32),
+                    dict(type='Pad', size_divisor=32),
                     dict(type='ImageToTensor', keys=['img']),
                     dict(type='Collect', keys=['img'])
                 ])
@@ -157,8 +159,10 @@ data = dict(
             dict(
                 type='MultiScaleFlipAug',
                 img_scale=(608, 608),
+                flip=False,
                 transforms=[
                     dict(type='Resize', keep_ratio=True),
+                    dict(type='RandomFlip'),
                     dict(
                         type='Normalize',
                         mean=[0, 0, 0],
@@ -170,14 +174,14 @@ data = dict(
                 ])
         ],
         samples_per_gpu=52,))
-optimizer = dict(type='SGD', lr=0.001, momentum=0.9, weight_decay=0.0005)
+optimizer = dict(type='SGD', lr=0.0003, momentum=0.9, weight_decay=0.0005)
 optimizer_config = dict(grad_clip=dict(max_norm=35, norm_type=2))
 lr_config = dict(
     policy='step',
     warmup='linear',
     warmup_iters=1,
     warmup_ratio=0.01,
-    step=[20, 23])
-runner = dict(type='EpochBasedRunner', max_epochs=25)
+    step=[4, 6])
+runner = dict(type='EpochBasedRunner', max_epochs=7)
 evaluation = dict(interval=1, metric='mAP')
 
