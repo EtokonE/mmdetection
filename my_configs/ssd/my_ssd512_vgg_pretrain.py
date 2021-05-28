@@ -1,5 +1,5 @@
-import sys
-sys.path.insert(1, '/home/user/server/home/d.grushevskaya1/projects/dron_maks/mmdetection')
+#import sys
+#sys.path.insert(1, '/home/user/server/home/d.grushevskaya1/projects/dron_maks/mmdetection')
 from define_anno import TRAIN_FILES, TEST_FILES, VAL_FILES, data_root
 
 print(f'TRAIN FILES: {TRAIN_FILES}')

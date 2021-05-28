@@ -1,5 +1,5 @@
-import sys
-sys.path.insert(1, '/home/user/server/home/d.grushevskaya1/projects/dron_maks/mmdetection')
+#import sys
+#sys.path.insert(1, '/home/user/server/home/d.grushevskaya1/projects/dron_maks/mmdetection')
 from define_anno import TRAIN_FILES, TEST_FILES, VAL_FILES, data_root
 
 print(f'TRAIN FILES: {TRAIN_FILES}')
@@ -228,7 +228,7 @@ train_pipeline = [
         saturation_range=(0.5, 1.5),
         hue_delta=18),
     dict(
-       type='Expand',  # Рандомный поворот
+       type='Expand',  # Рандомный поворотnaN
        mean=[123.675, 116.28, 103.53],
        to_rgb=True,
        ratio_range=(1, 4)),
@@ -300,11 +300,7 @@ data = dict(
             ]),
     val=dict(
         type=dataset_type,
-<<<<<<< HEAD
-        ann_file= str(VAL_FILES[0]), 
-=======
         ann_file=VAL_FILES,
->>>>>>> 7a4d353586e1b8ffdedcd301ced14c2160f1d355
         img_prefix=data_root,
         pipeline=[
             dict(type='LoadImageFromFile'),
@@ -362,4 +358,4 @@ log_level = 'INFO'
 load_from = 'http://download.openmmlab.com/mmdetection/v2.0/ssd/ssd512_coco/ssd512_coco_20200308-038c5591.pth'
 resume_from = None
 workflow = [('train', 1)]
-work_dir = './experiment/ssd/my_ssd_full'
+work_dir = './experiment/ssd/my_ssd_full_test'
