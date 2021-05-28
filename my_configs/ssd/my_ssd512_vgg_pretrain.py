@@ -19,7 +19,7 @@ model = dict(
 
     # Откуда будем загружать предобученные веса
     #pretrained='./experiment/weights_yolo_dasha/checkpoint.pth',
-    pretrained='./model.pth'
+    pretrained='./model.pth',
     # ---------------------------------------------------
 
     # Определяем конфигурацию классификатора ->
