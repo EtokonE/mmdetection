@@ -1,4 +1,4 @@
-# Изменены размеры якорных боксов и порог confidence yf 0.3
+# Изменены размеры якорных боксов и порог confidence на 0.3, уменьшен LR
 
 from define_anno import TRAIN_FILES, TEST_FILES, VAL_FILES, data_root
 
@@ -103,7 +103,7 @@ test_pipeline = [
         ])
 ]
 data = dict(
-    samples_per_gpu=10,
+    samples_per_gpu=11,
     workers_per_gpu=2,
     train=dict(
         type=dataset_type,
