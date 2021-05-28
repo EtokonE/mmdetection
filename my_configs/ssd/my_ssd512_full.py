@@ -300,11 +300,7 @@ data = dict(
             ]),
     val=dict(
         type=dataset_type,
-<<<<<<< HEAD
-        ann_file= str(VAL_FILES[0]), 
-=======
         ann_file=VAL_FILES,
->>>>>>> 7a4d353586e1b8ffdedcd301ced14c2160f1d355
         img_prefix=data_root,
         pipeline=[
             dict(type='LoadImageFromFile'),
