@@ -32,8 +32,9 @@ class MyDataset_drop10(CustomDataset):
         
             i['ann']['bboxes'] = np.array(i['ann']['bboxes']).astype(np.float32)
             i['ann']['labels'] = np.array(i['ann']['labels']).astype(np.int64)
-
-            data_infos.append(i)
+            
+            if i['ann']['bboxes'] > 0:
+                data_infos.append(i)
 
         return data_infos
 
