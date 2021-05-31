@@ -165,7 +165,7 @@ data = dict(
                 ])
         ]),
     test=dict(
-        type=dataset_type,
+        type='MyDataset',
         ann_file=TEST_FILES,
         img_prefix=data_root,
         pipeline=[
