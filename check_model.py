@@ -17,7 +17,6 @@ def parse_args():
 def main(args):
     cfg = Config.fromfile(args.config)
     model = build_detector(cfg.model)
-    #config.model, test_cfg=config.test_cfg 
     print(model)
     torch.save(model.state_dict(), './saved_model_state.pt')    
     print('Model saved')
