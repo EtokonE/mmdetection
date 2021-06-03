@@ -19,7 +19,8 @@ def main(args):
     print('Model saved')
 
 
-if __name__ ==  '__main__':
-    main(parse_args)
+if __name__ == '__main__':
+    args = parse_args()
+    main(args)
 
 
