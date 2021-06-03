@@ -13,7 +13,8 @@ def parse_args():
 
     
 def main(args):
-    model = init_detector(args.config, args.checkpoint, device=args.device)
+    #model = init_detector(args.config, args.checkpoint, device=args.device)
+    model = build_detector(args.config, test_cfg=args.config.get('test_cfg'))
     print(model)
     torch.save(model.state_dict(), './saved_model_state.pt')    
     print('Model saved')
