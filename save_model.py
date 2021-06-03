@@ -8,8 +8,7 @@ from argparse import ArgumentParser
 def parse_args():
     parser = ArgumentParser()
     parser.add_argument('config', help='Config file')
-    parser.add_argument('checkpoint', help='Checkpoint file')
-    parser.add_argument('--device', default='cuda:0', help='Device used for inference')
+    parser.add_argument('out_file', default='./saved_model.pt', help='path to out file')
     args = parser.parse_args()
     return args
 
@@ -18,7 +17,7 @@ def main(args):
     cfg = Config.fromfile(args.config)
     model = build_detector(cfg.model)
     print(model)
-    torch.save(model, './saved_model.pt')    
+    torch.save(model, args.out_file)    
     print('Model saved')
 
 
