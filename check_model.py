@@ -10,13 +10,16 @@ def parse_args():
     parser.add_argument('--device', default='cuda:0', help='Device used for inference')
     args = parser.parse_args()
     return args
+
     
 def main(args):
     model = init_detector(args.config, args.checkpoint, device=args.device)
     print(model)
-    torch.save(model.state_dict(), 'saved_model_state.pt')    
+    torch.save(model.state_dict(), './saved_model_state.pt')    
     print('Model saved')
 
 
+if __name__ ==  '__main__':
+    main(parse_args)
 
 
