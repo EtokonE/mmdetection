@@ -1,4 +1,4 @@
 import torch
-model = torch.load('./saved_model_state.pt')
+model = torch.load('./saved_model.pt')
 
 print(model)
