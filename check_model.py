@@ -18,7 +18,7 @@ def main(args):
     cfg = Config.fromfile(args.config)
     model = build_detector(cfg.model)
     print(model)
-    torch.save(model.state_dict(), './saved_model_state.pt')    
+    torch.save(model, './saved_model.pt')    
     print('Model saved')
 
 
