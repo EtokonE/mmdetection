@@ -1,4 +1,5 @@
 from mmdet.apis import init_detector
+from mmdet.models import build_detector
 import torch
 from argparse import ArgumentParser
 
