@@ -25,7 +25,7 @@ class MyDataset_drop10(CustomDataset):
                 if abs( (i['ann']['bboxes'][num_bbox][0] - i['ann']['bboxes'][num_bbox][2]) * (i['ann']['bboxes'][num_bbox][1] - i['ann']['bboxes'][num_bbox][3]) ) < 10:
                     pop_list.append(num_bbox)
 
-                # Удаляем слишком маленькие боксы и метки их классов
+            # Удаляем слишком маленькие боксы и метки их классов
             for el in pop_list[::-1]:
                 i['ann']['bboxes'].pop(el)
                 i['ann']['labels'].pop(el)
@@ -33,7 +33,6 @@ class MyDataset_drop10(CustomDataset):
             i['ann']['bboxes'] = np.array(i['ann']['bboxes']).astype(np.float32)
             i['ann']['labels'] = np.array(i['ann']['labels']).astype(np.int64)
             
-            #if len(i['ann']['bboxes']) > 0:
             data_infos.append(i)
 
         return data_infos
