@@ -6,7 +6,7 @@ print(f'TRAIN FILES: {TRAIN_FILES}')
 print(f'VAL FILES: {VAL_FILES}')
 print(f'TEST FILES: {TEST_FILES}')
 num_classes = 1
-dataset_type = 'MyDataset_drop10'
+dataset_type = 'MyDataset_ignore10'
 checkpoint_config = dict(interval=1)
 log_config = dict(interval=1, hooks=[dict(type='TextLoggerHook'), dict(type='TensorboardLoggerHook')])
 custom_hooks = [dict(type='NumClassCheckHook')]
