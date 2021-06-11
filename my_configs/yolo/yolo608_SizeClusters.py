@@ -32,9 +32,9 @@ model = dict(
         out_channels=[1024, 512, 256],
         anchor_generator=dict(
             type='YOLOAnchorGenerator',
-            base_sizes=[[(80, 90), (156, 198), (200, 200)],
-                        [(20, 51), (45, 20), (50, 79)],
-                        [(6, 8), (10, 10), (16, 16)]],
+            base_sizes=[[(321, 369), (558, 290), (551, 505)],
+                        [(39, 42), (86, 71), (225, 194)],
+                        [(4, 6), (11, 13), (21, 22)]],
             strides=[32, 16, 8]),
         bbox_coder=dict(type='YOLOBBoxCoder'),
         featmap_strides=[32, 16, 8],
