@@ -2,6 +2,7 @@ from mmdet.apis import init_detector
 from mmdet.models import build_detector
 from mmcv import Config
 import torch
+from torchsummary import summary
 from argparse import ArgumentParser
 
 
@@ -17,6 +18,7 @@ def main(args):
     cfg = Config.fromfile(args.config)
     model = build_detector(cfg.model)
     print(model)
+    print(summary(model, (3, 512, 512))
     torch.save(model, args.out_file)    
     print('Model saved')
 
