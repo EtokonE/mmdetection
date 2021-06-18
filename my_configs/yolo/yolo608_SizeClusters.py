@@ -15,7 +15,7 @@ log_level = 'INFO'
 load_from = 'http://download.openmmlab.com/mmdetection/v2.0/yolo/yolov3_d53_mstrain-608_273e_coco/yolov3_d53_mstrain-608_273e_coco-139f5633.pth'
 resume_from = None #'/home/dron_maks/mmdetection/experiment/yolo/yolo608_base/epoch_5.pth'
 workflow = [('train', 1)]
-work_dir = './experiment/yolo/yolo608_SizeClust'
+work_dir = './experiment/yolo/yolo608_SizeClust_resume9'
 model = dict(
     type='YOLOV3',
     pretrained='open-mmlab://darknet53',
@@ -195,7 +195,7 @@ lr_config = dict(
     warmup='linear',
     warmup_iters=1,
     warmup_ratio=0.01,
-    step=[5, 13])
-runner = dict(type='EpochBasedRunner', max_epochs=15)
+    step=[5, 27])
+runner = dict(type='EpochBasedRunner', max_epochs=30)
 evaluation = dict(interval=1, metric='mAP')
 
