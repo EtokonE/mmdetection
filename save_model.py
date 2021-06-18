@@ -18,7 +18,7 @@ def main(args):
     cfg = Config.fromfile(args.config)
     model = build_detector(cfg.model)
     print(model)
-    print(summary(model, (3, 512, 512))
+    print(summary(model, (3, 512, 512)))
     torch.save(model, args.out_file)    
     print('Model saved')
 
