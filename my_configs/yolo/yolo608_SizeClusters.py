@@ -1,3 +1,5 @@
+# Изменены размеры якорных боксов на основе кластеризации
+
 from define_anno import TRAIN_FILES, TEST_FILES, VAL_FILES, data_root
 
 print(f'TRAIN FILES: {TRAIN_FILES}')
@@ -10,10 +12,10 @@ log_config = dict(interval=1, hooks=[dict(type='TextLoggerHook'), dict(type='Ten
 custom_hooks = [dict(type='NumClassCheckHook')]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-#load_from = 'http://download.openmmlab.com/mmdetection/v2.0/yolo/yolov3_d53_mstrain-608_273e_coco/yolov3_d53_mstrain-608_273e_coco-139f5633.pth'
-resume_from = '/home/dron_maks/mmdetection/experiment/yolo/yolo608_base/epoch_5.pth'
+load_from = 'http://download.openmmlab.com/mmdetection/v2.0/yolo/yolov3_d53_mstrain-608_273e_coco/yolov3_d53_mstrain-608_273e_coco-139f5633.pth'
+resume_from = None #'/home/dron_maks/mmdetection/experiment/yolo/yolo608_base/epoch_5.pth'
 workflow = [('train', 1)]
-work_dir = './experiment/yolo/yolo608_base_ResumeFrom5'
+work_dir = './experiment/yolo/yolo608_SizeClust_resume9'
 model = dict(
     type='YOLOV3',
     pretrained='open-mmlab://darknet53',
@@ -30,9 +32,9 @@ model = dict(
         out_channels=[1024, 512, 256],
         anchor_generator=dict(
             type='YOLOAnchorGenerator',
-            base_sizes=[[(116, 90), (156, 198), (373, 326)],
-                        [(30, 61), (62, 45), (59, 119)],
-                        [(10, 13), (16, 30), (33, 23)]],
+            base_sizes=[[(321, 369), (558, 290), (551, 505)],
+                        [(39, 42), (86, 71), (225, 194)],
+                        [(4, 6), (11, 13), (21, 22)]],
             strides=[32, 16, 8]),
         bbox_coder=dict(type='YOLOBBoxCoder'),
         featmap_strides=[32, 16, 8],
@@ -108,7 +110,7 @@ test_pipeline = [
         ])
 ]
 data = dict(
-    samples_per_gpu=10,
+    samples_per_gpu=11,
     workers_per_gpu=2,
     train=dict(
         type=dataset_type,
@@ -193,7 +195,7 @@ lr_config = dict(
     warmup='linear',
     warmup_iters=1,
     warmup_ratio=0.01,
-    step=[15, 30])
-runner = dict(type='EpochBasedRunner', max_epochs=40)
+    step=[5, 27])
+runner = dict(type='EpochBasedRunner', max_epochs=30)
 evaluation = dict(interval=1, metric='mAP')
 

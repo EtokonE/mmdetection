@@ -2,6 +2,8 @@ from .builder import DATASETS, PIPELINES, build_dataloader, build_dataset
 from .cityscapes import CityscapesDataset
 from .coco import CocoDataset
 from .my_dataset import MyDataset
+from .my_dataset_drop10 import MyDataset_drop10
+from .my_dataset_ignore10 import MyDataset_ignore10
 from .custom import CustomDataset
 from .my_dataset import MyDataset
 from .dataset_wrappers import (ClassBalancedDataset, ConcatDataset,
@@ -22,4 +24,4 @@ __all__ = [
     'DistributedSampler', 'build_dataloader', 'ConcatDataset', 'RepeatDataset',
     'ClassBalancedDataset', 'WIDERFaceDataset', 'DATASETS', 'PIPELINES',
     'build_dataset', 'replace_ImageToTensor', 'get_loading_pipeline',
-    'NumClassCheckHook','MyDataset',]
+    'NumClassCheckHook','MyDataset', 'MyDataset_drop10', 'MyDataset_ignore10']

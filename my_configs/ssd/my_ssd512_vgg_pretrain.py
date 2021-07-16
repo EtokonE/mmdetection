@@ -18,7 +18,8 @@ model = dict(
     # ---------------------------------------------------
 
     # Откуда будем загружать предобученные веса
-    pretrained='open-mmlab://vgg16_caffe',
+    #pretrained='./experiment/weights_yolo_dasha/checkpoint.pth',
+    pretrained='./model.pth',
     # ---------------------------------------------------
 
     # Определяем конфигурацию классификатора ->
@@ -228,7 +229,7 @@ train_pipeline = [
         saturation_range=(0.5, 1.5),
         hue_delta=18),
     dict(
-       type='Expand',  # Рандомный поворотnaN
+       type='Expand',  # Рандомный поворот
        mean=[123.675, 116.28, 103.53],
        to_rgb=True,
        ratio_range=(1, 4)),
@@ -349,7 +350,7 @@ lr_config = dict(
     warmup_iters=1500,
     warmup_ratio=1.0/1e10,
     step=[])
-runner = dict(type='EpochBasedRunner', max_epochs=15)
+runner = dict(type='EpochBasedRunner', max_epochs=2)
 checkpoint_config = dict(interval=1)
 log_config = dict(interval=1, hooks=[dict(type='TextLoggerHook'), dict(type='TensorboardLoggerHook')])
 custom_hooks = [dict(type='NumClassCheckHook')]
@@ -358,4 +359,4 @@ log_level = 'INFO'
 load_from = 'http://download.openmmlab.com/mmdetection/v2.0/ssd/ssd512_coco/ssd512_coco_20200308-038c5591.pth'
 resume_from = None
 workflow = [('train', 1)]
-work_dir = './experiment/ssd/my_ssd_full_test'
+work_dir = './experiment/ssd/weights_yolo_dasha'

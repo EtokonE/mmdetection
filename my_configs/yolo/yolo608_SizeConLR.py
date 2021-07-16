@@ -1,3 +1,5 @@
+# Изменены размеры якорных боксов и порог confidence на 0.3, уменьшен LR
+
 from define_anno import TRAIN_FILES, TEST_FILES, VAL_FILES, data_root
 
 print(f'TRAIN FILES: {TRAIN_FILES}')
@@ -10,10 +12,10 @@ log_config = dict(interval=1, hooks=[dict(type='TextLoggerHook'), dict(type='Ten
 custom_hooks = [dict(type='NumClassCheckHook')]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-#load_from = 'http://download.openmmlab.com/mmdetection/v2.0/yolo/yolov3_d53_mstrain-608_273e_coco/yolov3_d53_mstrain-608_273e_coco-139f5633.pth'
-resume_from = '/home/dron_maks/mmdetection/experiment/yolo/yolo608_base/epoch_5.pth'
+load_from = 'http://download.openmmlab.com/mmdetection/v2.0/yolo/yolov3_d53_mstrain-608_273e_coco/yolov3_d53_mstrain-608_273e_coco-139f5633.pth'
+resume_from = None #'/home/dron_maks/mmdetection/experiment/yolo/yolo608_base/epoch_5.pth'
 workflow = [('train', 1)]
-work_dir = './experiment/yolo/yolo608_base_ResumeFrom5'
+work_dir = './experiment/yolo/yolo608_SizeConfLR'
 model = dict(
     type='YOLOV3',
     pretrained='open-mmlab://darknet53',
@@ -30,9 +32,9 @@ model = dict(
         out_channels=[1024, 512, 256],
         anchor_generator=dict(
             type='YOLOAnchorGenerator',
-            base_sizes=[[(116, 90), (156, 198), (373, 326)],
-                        [(30, 61), (62, 45), (59, 119)],
-                        [(10, 13), (16, 30), (33, 23)]],
+            base_sizes=[[(80, 90), (156, 198), (200, 200)],
+                        [(20, 51), (45, 20), (50, 79)],
+                        [(6, 8), (10, 10), (16, 16)]],
             strides=[32, 16, 8]),
         bbox_coder=dict(type='YOLOBBoxCoder'),
         featmap_strides=[32, 16, 8],
@@ -55,8 +57,8 @@ model = dict(
     train_cfg=dict(
         assigner=dict(
             type='GridAssigner',
-            pos_iou_thr=0.5,
-            neg_iou_thr=0.5,
+            pos_iou_thr=0.3,
+            neg_iou_thr=0.3,
             min_pos_iou=0)),
     test_cfg=dict(
         nms_pre=1000,
@@ -72,19 +74,13 @@ train_pipeline = [
     dict(type='LoadImageFromFile', to_float32=True),
     dict(type='LoadAnnotations', with_bbox=True),
     dict(type='PhotoMetricDistortion'),
-    dict(type='Expand', mean=[0, 0, 0], to_rgb=True, ratio_range=(1, 2)),
-    dict(
-        type='MinIoURandomCrop',
-        min_ious=(0.4, 0.5, 0.6, 0.7, 0.8, 0.9),
-        min_crop_size=0.3),
     dict(type='Resize', img_scale=[(320, 320), (608, 608)], keep_ratio=True),
-    dict(type='RandomFlip', flip_ratio=0.5),
+    dict(type='RandomFlip', flip_ratio=0.01),
     dict(
         type='Normalize',
         mean=[0, 0, 0],
         std=[255.0, 255.0, 255.0],
         to_rgb=True),
-    dict(type='Pad', size_divisor=32),
     dict(type='DefaultFormatBundle'),
     dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels'])
 ]
@@ -102,13 +98,12 @@ test_pipeline = [
                 mean=[0, 0, 0],
                 std=[255.0, 255.0, 255.0],
                 to_rgb=True),
-            dict(type='Pad', size_divisor=32),
             dict(type='ImageToTensor', keys=['img']),
             dict(type='Collect', keys=['img'])
         ])
 ]
 data = dict(
-    samples_per_gpu=10,
+    samples_per_gpu=11,
     workers_per_gpu=2,
     train=dict(
         type=dataset_type,
@@ -119,17 +114,10 @@ data = dict(
             dict(type='LoadAnnotations', with_bbox=True),
             dict(type='PhotoMetricDistortion'),
             dict(
-                type='Expand', mean=[0, 0, 0], to_rgb=True,
-                ratio_range=(1, 2)),
-            dict(
-                type='MinIoURandomCrop',
-                min_ious=(0.4, 0.5, 0.6, 0.7, 0.8, 0.9),
-                min_crop_size=0.3),
-            dict(
                 type='Resize',
                 img_scale=[(320, 320), (608, 608)],
                 keep_ratio=True),
-            dict(type='RandomFlip', flip_ratio=0.5),
+            dict(type='RandomFlip', flip_ratio=0.01),
             dict(
                 type='Normalize',
                 mean=[0, 0, 0],
@@ -186,14 +174,14 @@ data = dict(
                 ])
         ],
         samples_per_gpu=52,))
-optimizer = dict(type='SGD', lr=0.001, momentum=0.9, weight_decay=0.0005)
+optimizer = dict(type='SGD', lr=0.0003, momentum=0.9, weight_decay=0.0005)
 optimizer_config = dict(grad_clip=dict(max_norm=35, norm_type=2))
 lr_config = dict(
     policy='step',
     warmup='linear',
     warmup_iters=1,
     warmup_ratio=0.01,
-    step=[15, 30])
-runner = dict(type='EpochBasedRunner', max_epochs=40)
+    step=[4, 6])
+runner = dict(type='EpochBasedRunner', max_epochs=7)
 evaluation = dict(interval=1, metric='mAP')
 
