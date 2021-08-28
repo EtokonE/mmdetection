@@ -1,3 +1,5 @@
+# Исправлен минимальный размер боксов в AnchorGenerator
+
 from define_anno import TRAIN_FILES, TEST_FILES, VAL_FILES, data_root
 
 print(f'TRAIN FILES: {TRAIN_FILES}')
