@@ -157,16 +157,16 @@ def plot_graphs(statistic_json, confidence, ignore_thr, graph_scale, work_dir):
         unidentified = []
         for anno in annotations:
             for i in range(len(anno.get('generated_bbox').get('iou_predicted_to_gt'))):
-                # Площадь неправильно задетектированных боксов
+                # Площадь неправильно задетектированных боксов (FP)
                 if float(anno.get('generated_bbox').get('iou_predicted_to_gt')[i]) < confidence:
                     negative_bbox_area.append(float(anno.get('generated_bbox').get('areas')[i]))
 
             for i in range(len(anno.get('generated_bbox').get('iou_gt_to_predicted'))):
-                # Площадь правильно задетектированных боксов
+                # Площадь правильно задетектированных боксов (TP)
                 if float(anno.get('generated_bbox').get('iou_gt_to_predicted')[i]) >= confidence:
                     positive_bbox_area.append(float(anno.get('area')[i]))
 
-                # Площадь истинных боксов, которые быди проигнорированны детектором
+                # Площадь истинных боксов, которые быди проигнорированны детектором (FN)
                 elif float(anno.get('generated_bbox').get('iou_gt_to_predicted')[i]) < confidence:
                     unidentified.append(float(anno.get('area')[i]))
 
