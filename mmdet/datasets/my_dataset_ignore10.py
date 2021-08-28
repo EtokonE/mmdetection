@@ -17,21 +17,19 @@ class MyDataset_ignore10(CustomDataset):
         data_infos = []
 
         for i in data:
-        # Переменная для хранения боксов подлежащих удалению
+            # Боксы, которые будем игнорировать 
             bboxes_ignore = []
             labels_ignore = []
-        # Для каждого изображения необходимо проверить площадь каждого бокса
+            # Для каждого изображения необходимо проверить площадь каждого бокса
             for num_bbox in range(len(i['ann']['bboxes'])):
                 if abs( (i['ann']['bboxes'][num_bbox][0] - i['ann']['bboxes'][num_bbox][2]) * (i['ann']['bboxes'][num_bbox][1] - i['ann']['bboxes'][num_bbox][3]) ) < 10:    
                     bboxes_ignore.append(i['ann']['bboxes'][num_bbox])
                     labels_ignore.append(i['ann']['labels'][num_bbox])
-
-
-
-        
-
+                 
+            # Загрузка аннотаций
             i['ann']['bboxes'] = np.array(i['ann']['bboxes']).astype(np.float32)
             i['ann']['labels'] = np.array(i['ann']['labels']).astype(np.int64)
+            # Добавление в аннотацию боксов, которые будут проигнорированы
             if len(bboxes_ignore) > 0:
                 i['ann']['bboxes_ignore'] = np.array(bboxes_ignore).astype(np.float32)
                 i['ann']['labels_ignore'] = np.array(labels_ignore).astype(np.int64)
