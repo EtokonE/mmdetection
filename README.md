@@ -43,7 +43,7 @@ $ CUDA_VISIBLE_DEVICES=2 python tools/test.py \
 ```bash
 $ python tools/analysis_tools/statistics.py 
 
-Posicional arguments:
+Positional arguments:
 
 $ result_pkl                          default: -                          Файл с результатами, созданный tools/test.py
 $ annotations                         default: -                          Файл аннотаций JSON
@@ -58,10 +58,40 @@ Optional arguments:
   
 ```
 *****
-- **[tools/analysis_tools/statistics.py](tools/analysis_tools/statistics.py)** - Сбор статистики
+
+## Кластеризация
+- **[tools/analysis_tools/clust_data.py](tools/analysis_tools/clust_data.py)** - Собрать данные для кластеризации
+```bash
+   $ python tools/analysis_tools/clust_data.py
+```
+- **[tools/analysis_tools/check_image_count.py](tools/analysis_tools/check_image_count.py)** - Собрать данные о размерах датасета
+```bash
+   $ python tools/analysis_tools/check_image_count.py
+```
+
+*****
+
+## Предварительная разметка
+
 - **[make_layout.py](make_layout.py)** - Предварительная разметка
 
+```bash
+$ python make_layout.py
 
+
+Positional arguments:
+
+$ config                              default: -                          Конфигурационный файл модели
+$ checkpoint                          default: -                          Веса модели
+$ workdir                             default: -                          Директория с видеофайлами
+$ video                               default: -                          Название видеофайла
+$ outdir                              default: -                          Директория для сохранения результатов
+
+Optional arguments:
+
+--iou_thr                             default=0.3                         Порог, после которого бокс попадает в файл
+ 
+```
 
 
 <div align="center">
