@@ -1,10 +1,43 @@
-## Описание
-- **[mmdet/datasets/my_dataset.py](mmdet/datasets/my_dataset.py)** - Создаем кастомный датасет
-- **[mmdet/datasets/__init__.py](mmdet/datasets/__init__.py)** - Регистрируем кастомный датасет
-- **[define_anno.py](define_anno.py)** - Определяем данные, используемые для Обучения, Валидации и Тестирования
+# Детектирование дронов
+
+## Предобработка данных 
+- **[mmdet/datasets/my_dataset.py](mmdet/datasets/my_dataset.py)** - Создание датасета - без изменений
+- **[mmdet/datasets/my_dataset_drop10.py](mmdet/datasets/my_dataset_drop10.py)** - Создание датасета - удалены боксы площадью < 10pix
+- **[mmdet/datasets/my_dataset_ignore10.py](mmdet/datasets/my_dataset_ignore10.py)** - Создание датасета - игнорируются боксы площадью < 10pix
+- **[mmdet/datasets/__init__.py](mmdet/datasets/__init__.py)** - Регистрация датасета
+- **[define_anno.py](define_anno.py)** - Группировка данных -> Обучение || Валидация || Тестирование
+*****
+## Подготовка к обучению
 - **[my_configs](my_configs)** - Создаем конфиги
 - **[experiment](experiment)** - Сохраняем результаты
-- **Запуск на определенном GPU:** CUDA_VISIBLE_DEVICES={$GPU_NUMBER} ./tools/dist_train.sh {$CONFIG} {$GPU_COUNT}
+*****
+## Обучение
+```bash
+CUDA_VISIBLE_DEVICES={$GPU_NUMBER} ./tools/dist_train.sh {$CONFIG} {$GPU_COUNT}
+
+Примеры запуска:
+- CUDA_VISIBLE_DEVICES=2 ./tools/dist_train.sh my_configs/ssd/my_ssd512_full.py 1
+```
+
+## Тестирование
+```bash
+python tools/test.py \
+    ${CONFIG_FILE} \
+    ${CHECKPOINT_FILE} \
+    [--out ${RESULT_FILE}] \
+    [--eval ${EVAL_METRICS}] \
+    [--show]
+    
+Пример запуска:
+- CUDA_VISIBLE_DEVICES=2 python tools/test.py \
+    experiment/ssd/my_ssd_full/my_ssd512_full.py \
+    experiment/ssd/my_ssd_full/epoch_9.pth  \
+    --out experiment/ssd/my_ssd_full/test/results.pkl \
+    --show-dir experiment/ssd/my_ssd_full/test \
+    --eval mAP
+```
+
+*****
 - **[tools/analysis_tools/statistics.py](tools/analysis_tools/statistics.py)** - Сбор статистики
 - **[make_layout.py](make_layout.py)** - Предварительная разметка
 
