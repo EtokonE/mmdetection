@@ -12,8 +12,8 @@ if __name__ == '__main__':
 	number_files = 0
 	count = 0
 	for i in subdirectories:
-	    list = os.listdir(i)
-	    number_files += len(list) / 2
+	    _list = os.listdir(i)
+	    number_files += len(_list) / 2
 	    print(i)
 	    count += 1
 	    print(count, len(subdirectories), number_files)
