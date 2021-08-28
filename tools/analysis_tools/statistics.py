@@ -15,12 +15,12 @@ def get_iou(bb1, bb2):
     ----------
     bb1 : list
         [x1, y1, x2, y2]
-        The (x1, y1) position is at the top left corner,
-        the (x2, y2) position is at the bottom right corner
+        The (x1, y1) координаты левого верхнего угла,
+        the (x2, y2) координаты правого нижнего угла
     bb2 : list
         [x1, y1, x2, y2]
-        The (x, y) position is at the top left corner,
-        the (x2, y2) position is at the bottom right corner
+        The (x, y) координаты левого верхнего угла,
+        the (x2, y2) координаты правого нижнего угла
 
     Returns
     -------
@@ -33,7 +33,7 @@ def get_iou(bb1, bb2):
     assert bb2[0] < bb2[2]
     assert bb2[1] < bb2[3]
 
-    # determine the coordinates of the intersection rectangle
+    # координаты прямоугольника пересечения
     x_left = max(bb1[0], bb2[0])
     y_top = max(bb1[1], bb2[1])
     x_right = min(bb1[2], bb2[2])
@@ -42,17 +42,14 @@ def get_iou(bb1, bb2):
     if x_right < x_left or y_bottom < y_top:
         return 0.0
 
-    # The intersection of two axis-aligned bounding boxes is always an
-    # axis-aligned bounding box
+    # пересечение двух боксов
     intersection_area = (x_right - x_left) * (y_bottom - y_top)
 
-    # compute the area of both AABBs
+    # объединение боксов
     bb1_area = (bb1[2] - bb1[0]) * (bb1[3] - bb1[1])
     bb2_area = (bb2[2] - bb2[0]) * (bb2[3] - bb2[1])
 
-    # compute the intersection over union by taking the intersection
-    # area and dividing it by the sum of prediction + ground-truth
-    # areas - the interesection area
+    # расчет iou
     iou = intersection_area / float(bb1_area + bb2_area - intersection_area)
     assert iou >= 0.0
     assert iou <= 1.0
@@ -139,7 +136,7 @@ def statistic_2(result_pkl, annotation_json, out, confidence, work_dir):
         json.dump(data_js, out_file)
 
 
-def plot_graphs(statistic_json, confidence, ignore_thr, graph_scale, work_dir):
+def plot_graphs(statistic_json, iou_thr, graph_scale, work_dir):
     """
     Парсит файл со статистиками и отрисовывает необходимые графики
     """
@@ -158,16 +155,16 @@ def plot_graphs(statistic_json, confidence, ignore_thr, graph_scale, work_dir):
         for anno in annotations:
             for i in range(len(anno.get('generated_bbox').get('iou_predicted_to_gt'))):
                 # Площадь неправильно задетектированных боксов (FP)
-                if float(anno.get('generated_bbox').get('iou_predicted_to_gt')[i]) < confidence:
+                if float(anno.get('generated_bbox').get('iou_predicted_to_gt')[i]) < iou_thr:
                     negative_bbox_area.append(float(anno.get('generated_bbox').get('areas')[i]))
 
             for i in range(len(anno.get('generated_bbox').get('iou_gt_to_predicted'))):
                 # Площадь правильно задетектированных боксов (TP)
-                if float(anno.get('generated_bbox').get('iou_gt_to_predicted')[i]) >= confidence:
+                if float(anno.get('generated_bbox').get('iou_gt_to_predicted')[i]) >= iou_thr:
                     positive_bbox_area.append(float(anno.get('area')[i]))
 
                 # Площадь истинных боксов, которые быди проигнорированны детектором (FN)
-                elif float(anno.get('generated_bbox').get('iou_gt_to_predicted')[i]) < confidence:
+                elif float(anno.get('generated_bbox').get('iou_gt_to_predicted')[i]) < iou_thr:
                     unidentified.append(float(anno.get('area')[i]))
 
         df_positive = pd.DataFrame({'positive': positive_bbox_area})
@@ -278,7 +275,7 @@ def plot_graphs(statistic_json, confidence, ignore_thr, graph_scale, work_dir):
         result_df.iloc[4][j] = round(result_df.iloc[1][j] / (result_df.iloc[1][j] + result_df.iloc[2][j]), 3)
         result_df.iloc[5][j] = round(result_df.iloc[1][j] / (result_df.iloc[1][j] + result_df.iloc[3][j]), 3)
 
-    result_df.to_csv(os.path.join(work_dir, f'result_metrics_{str(confidence)}.csv'))
+    result_df.to_csv(os.path.join(work_dir, f'result_metrics_{str(iou_thr)}.csv'))
 
     print('Готово')
 
@@ -290,8 +287,7 @@ def parse_args():
     parser.add_argument('out', default='stats.json', help='Название файла, куда сохраняем результаты')
     parser.add_argument('workdir', help='Папка, куда сохраняем графики')
     parser.add_argument('--confidence', default=0.3, help='Порог, после которого бокс идет на отрисовку')
-    parser.add_argument('--ignore_thr', default=0.03, help='Минимальный порог для того чтобы истинный бокс'
-                                                           'не отправилься в неопознанные')
+    parser.add_argument('--iou_thr', default=0.3, help='Минимальный порог iou')
     parser.add_argument('--graph_scale', default=1000, help='xlim у графиков')
     args = parser.parse_args()
     return args
@@ -311,8 +307,7 @@ def main():
     # Сохраняем графики
     plot_graphs(
         statistic_json=args.out,
-        confidence=float(args.confidence),
-        ignore_thr=args.ignore_thr,
+        iou_thr=args.iou_thr,
         graph_scale=int(args.graph_scale),
         work_dir=args.workdir
     )
