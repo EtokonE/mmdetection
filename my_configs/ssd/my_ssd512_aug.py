@@ -1,3 +1,5 @@
+# Уменьшены аугментации
+
 from define_anno import TRAIN_FILES, TEST_FILES, VAL_FILES, data_root
 
 
