@@ -17,11 +17,3 @@ if __name__ == '__main__':
 	    print(i)
 	    count += 1
 	    print(count, len(subdirectories), number_files)
-
-#print(number_files)
-
-"""
-data_root = '/home/max/server_1/home/d.grushevskaya1/projects/dron_maks/full_data/annotation/'
-files = glob(data_root + '*.json')
-files.drop('/home/max/server_1/home/d.grushevskaya1/projects/dron_maks/full_data/annotation/ch01_20200703110241-part 00000.json')
-"""
