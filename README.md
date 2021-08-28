@@ -13,15 +13,15 @@
 *****
 ## Обучение
 ```bash
-CUDA_VISIBLE_DEVICES={$GPU_NUMBER} ./tools/dist_train.sh {$CONFIG} {$GPU_COUNT}
+$ CUDA_VISIBLE_DEVICES={$GPU_NUMBER} ./tools/dist_train.sh {$CONFIG} {$GPU_COUNT}
 
 Примеры запуска:
-- CUDA_VISIBLE_DEVICES=2 ./tools/dist_train.sh my_configs/ssd/my_ssd512_full.py 1
+$ CUDA_VISIBLE_DEVICES=2 ./tools/dist_train.sh my_configs/ssd/my_ssd512_full.py 1
 ```
 
 ## Тестирование
 ```bash
-python tools/test.py \
+$ python tools/test.py \
     ${CONFIG_FILE} \
     ${CHECKPOINT_FILE} \
     [--out ${RESULT_FILE}] \
@@ -29,7 +29,7 @@ python tools/test.py \
     [--show]
     
 Пример запуска:
-- CUDA_VISIBLE_DEVICES=2 python tools/test.py \
+$ CUDA_VISIBLE_DEVICES=2 python tools/test.py \
     experiment/ssd/my_ssd_full/my_ssd512_full.py \
     experiment/ssd/my_ssd_full/epoch_9.pth  \
     --out experiment/ssd/my_ssd_full/test/results.pkl \
@@ -37,6 +37,26 @@ python tools/test.py \
     --eval mAP
 ```
 
+## Анализ результатов
+- **[tools/analysis_tools/statistics.py](tools/analysis_tools/statistics.py)** - Сбор статистики
+
+```bash
+$ python tools/analysis_tools/statistics.py 
+
+Posicional arguments:
+
+$ result_pkl                          default: -                          Файл с результатами, созданный tools/test.py
+$ annotations                         default: -                          Файл аннотаций JSON
+$ out                                 default: 'stats.json'               Название файла, куда сохраняем результаты
+$ workdir                             default: -                          Папка, куда сохраняем графики
+
+Optional arguments:
+
+--confidence                          default=0.3                         Порог confidence, после которого бокс идет на отрисовку
+--iou_thr                             default=0.3                         Минимальный порог iou
+--graph_scale                         default=1000                        Ограничение по оси абсцисс -> xlim при построении графиков
+  
+```
 *****
 - **[tools/analysis_tools/statistics.py](tools/analysis_tools/statistics.py)** - Сбор статистики
 - **[make_layout.py](make_layout.py)** - Предварительная разметка
