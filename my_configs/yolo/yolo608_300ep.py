@@ -1,4 +1,4 @@
-# Изменены размеры якорных боксов на основе кластеризации
+# Изменены размеры якорных боксов на основе кластеризации + LR Sheduler
 
 from define_anno import TRAIN_FILES, TEST_FILES, VAL_FILES, data_root
 
