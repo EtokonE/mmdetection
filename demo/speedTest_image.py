@@ -108,7 +108,7 @@ def videoSpeedTest(video, out, model, score_thr):
     print(f'Обработка кадра в среднем: {sum(frameProcess_time) / len(frameProcess_time)} sec' )
     print(f'Проход через нейросеть: {sum(inference_time) / len(inference_time)} sec' )
     print(f'Обработка результата: {sum(resultProcessing_time) / len(resultProcessing_time)} sec' )
-    print(f'Обработка результата: {sum(writeVideo_time) / len(writeVideo_time)} sec' )
+    print(f'Запись: {sum(writeVideo_time) / len(writeVideo_time)} sec' )
 
 
     
