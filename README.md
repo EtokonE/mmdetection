@@ -52,9 +52,9 @@ $ workdir                             default: -                          Пап
 
 Optional arguments:
 
---confidence                          default=0.3                         Порог confidence, после которого бокс идет на отрисовку
---iou_thr                             default=0.3                         Минимальный порог iou
---graph_scale                         default=1000                        Ограничение по оси абсцисс -> xlim при построении графиков
+--confidence                          default: 0.3                        Порог confidence, после которого бокс идет на отрисовку
+--iou_thr                             default: 0.3                        Минимальный порог iou
+--graph_scale                         default: 1000                       Ограничение по оси абсцисс -> xlim при построении графиков
   
 ```
 *****
@@ -89,10 +89,36 @@ $ outdir                              default: -                          Дир
 
 Optional arguments:
 
---iou_thr                             default=0.3                         Порог, после которого бокс попадает в файл
+--iou_thr                             default: 0.3                        Порог, после которого бокс попадает в файл
  
 ```
+*****
 
+## Время работы
+```bash
+$ CUDA_VISIBLE_DEVICES=3 python demo/speedTest_image.py
+
+
+Positional arguments:
+
+$ source                              default: -                          Изображение или Видеофайл
+$ config                              default: -                          Конфигурационный файл модели
+$ checkpoint                          default: -                          Веса модели
+
+Optional arguments:
+--device                              default: 'cuda:0'                   Устройство для inference
+--score_thr                           default: 0.3                        Порог confidence
+--out                                 default: './speedTestVideoResult.mp4v'
+--image_test                          action                              Произвести тест на одном картинке
+--video_test                          action                              Произвести тест на видео
+
+Пример запуска
+$ CUDA_VISIBLE_DEVICES=3 python demo/speedTest_image.py \
+    ../video_data/val8_9.avi \   
+    my_configs/yolo/yolo608_SizeClusters.py \
+    experiment/yolo/yolo608_SizeClust/epoch_9.pth \ 
+    --video_test
+```
 
 <div align="center">
   <img src="resources/mmdet-logo.png" width="600"/>
