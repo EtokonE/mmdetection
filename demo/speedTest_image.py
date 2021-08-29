@@ -27,7 +27,7 @@ args = parse_args()
 model = init_detector(args.config, args.checkpoint, device=args.device)
 img = args.img
 
-'''
+"""
 def speed_test():
     args = parse_args()
     model = init_detector(args.config, args.checkpoint, device=args.device)
@@ -35,14 +35,15 @@ def speed_test():
     #return inference_detector(model, img)
     #print(timeit.repeat('inference_detector(model, img)', 'from __main__ import inference_detector, model, img', repeat=20, number=1))
     print(timeit.repeat('inference_detector(model, img)', 'from __main__ import inference_detector', repeat=20, number=1))
-'''
+"""
 def main(args):
-    if args.speed_test:
-        print(timeit.repeat('inference_detector(model, img)', 
-                            'from __main__ import inference_detector, model, img', 
-                            repeat=20, 
-                            number=1)
+    print(timeit.repeat('inference_detector(model, img)', 
+                        'from __main__ import inference_detector, model, img', 
+                        repeat=20, 
+                        number=1))
+
 
 if __name__ == '__main__':
     args = parse_args()
     main(args)
+
