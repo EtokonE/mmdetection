@@ -26,7 +26,6 @@ def parse_args():
         '--video_test',
         action='store_true', 
         help='start speed test on video')
-    )
     args = parser.parse_args()
     return args
 
