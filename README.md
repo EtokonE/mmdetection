@@ -95,6 +95,9 @@ Optional arguments:
 *****
 
 ## Время работы
+
+- **[demo/speedTest.py](demo/speedTest.py)** - Время работы
+
 ```bash
 $ CUDA_VISIBLE_DEVICES=3 python demo/speedTest_image.py
 
