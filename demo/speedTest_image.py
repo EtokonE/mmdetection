@@ -17,7 +17,7 @@ def parse_args():
     parser.add_argument(
         '--score-thr', type=float, default=0.3, help='bbox score threshold')
     parser.add_argument(
-                '--out', type=str, default='./speedTestVideoResult.mp4v', help='Output video file'    
+                '--out', type=str, default='./speedTestVideoResult.mp4v', help='Output video file')    
     parser.add_argument(
         '--image_test', 
         action='store_true', 
