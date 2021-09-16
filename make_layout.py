@@ -18,8 +18,14 @@ def parse_args():
     args = parser.parse_args()
     return args
 
-def layout_video(config, checkpoint, work_dir, video, outdir, iou_thr):
-
+def labelling_video(config, checkpoint, work_dir, video, outdir, iou_thr):
+    '''
+        Формат данных предварительной разметки:
+        C(x,y) -> координаты центра бокса
+        w -> ширина
+        h -> высота
+        logs -> комментарий (опционально)
+    '''
     csv_file = str(video) + '_layout.csv'
     model = init_detector(config, checkpoint, device='cuda:0')
     print(os.path.join(work_dir, video))
@@ -54,7 +60,7 @@ if __name__ == '__main__':
             if some_video.endswith(".mp4"):
         #for some_video in glob.glob(os.path.join(args.workdir, args.video)):
                 print(f'Started to process video {some_video}')
-                layout_video(config=args.config,
+                labelling_video(config=args.config,
                             checkpoint=args.checkpoint,
                             work_dir=args.workdir,
                             video=some_video,
@@ -62,7 +68,7 @@ if __name__ == '__main__':
                             iou_thr=args.iou_thr)
 
     else:       
-        layout_video(config=args.config,
+        labelling_video(config=args.config,
                      checkpoint=args.checkpoint,
                      work_dir=args.workdir,
                      video=args.video,

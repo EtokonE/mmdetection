@@ -1,6 +1,4 @@
-import numpy as np
-import json
-from glob import glob
+# Считаем общее количество изображений в датасете
 from pathlib import Path
 import os
 

@@ -1,6 +1,8 @@
+# Собираем данные о размерах каждого бокса в датасете для проведения кластеризации
 import numpy as np
 import json
-from glob import glob
+from glob import glob
+
 import pandas as pd
 
 data_root = '/home/max/server_1/home/d.grushevskaya1/projects/dron_maks/full_data/annotation/'
