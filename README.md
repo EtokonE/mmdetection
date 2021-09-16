@@ -1,9 +1,7 @@
 # Детектирование дронов
 
 ## Предобработка данных 
-- **[mmdet/datasets/my_dataset.py](mmdet/datasets/my_dataset.py)** - Создание датасета - без изменений
-- **[mmdet/datasets/my_dataset_drop10.py](mmdet/datasets/my_dataset_drop10.py)** - Создание датасета - удалены боксы площадью < 10pix
-- **[mmdet/datasets/my_dataset_ignore10.py](mmdet/datasets/my_dataset_ignore10.py)** - Создание датасета - игнорируются боксы площадью < 10pix
+- **[mmdet/datasets/my_dataset.py](mmdet/datasets/my_dataset.py)** - Создание датасета
 - **[mmdet/datasets/__init__.py](mmdet/datasets/__init__.py)** - Регистрация датасета
 - **[define_anno.py](define_anno.py)** - Группировка данных -> Обучение || Валидация || Тестирование
 *****
