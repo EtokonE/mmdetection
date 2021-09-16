@@ -65,7 +65,7 @@ def statistic_2(result_pkl, annotation_json, out, confidence, work_dir):
 
     if not os.path.exists(work_dir):
         os.makedirs(work_dir)
-    
+
     # Загружаем файл, созданный при помощи tools/test.py
     with open(str(result_pkl), 'rb') as pkl:
         data_pkl = pickle.load(pkl)
@@ -225,6 +225,7 @@ def plot_graphs(statistic_json, iou_thr, graph_scale, work_dir):
     ax.set_xlim(0,graph_scale)
     plt.savefig(os.path.join(work_dir, 'Unidentified_to_ground_truth.png'))
 
+    print(df_gt_areas.columns[0])
     # ___________________График_истинных_к_неверно_распознанным_________________
     fig = plt.figure(figsize=(18, 8))
     ax = fig.add_subplot()
