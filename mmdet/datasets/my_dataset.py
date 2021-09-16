@@ -7,7 +7,7 @@ from .custom import CustomDataset
 
 @DATASETS.register_module()
 class MyDataset(CustomDataset):
-    
+    '''Датасет содержит все картинки, прописанные в аннотациях'''
     CLASSES = (['drone'])
     def load_annotations(self, ann_file):
         f = open(ann_file)
@@ -15,7 +15,6 @@ class MyDataset(CustomDataset):
         data_infos = []
         for i in data:
             i['ann']['bboxes'] = np.array(i['ann']['bboxes']).astype(np.float32)
-            #i['ann']['bboxes'] = np.array([[ (bboxes[0][0]-0.5*bboxes[0][2]), (bboxes[0][1]-0.5*bboxes[0][3]), (bboxes[0][0]+0.5*bboxes[0][2]), (bboxes[0][1]+0.5*bboxes[0][3]),]]).astype(np.float32)
             i['ann']['labels'] = np.array(i['ann']['labels']).astype(np.int64)
             data_infos.append(i)
         return data_infos
@@ -26,7 +25,7 @@ class MyDataset(CustomDataset):
 
 @DATASETS.register_module()
 class MyDataset_drop10(CustomDataset):
-    
+    '''Из датасета удалены все боксы, площадь которых меньше 10pix'''
     CLASSES = (['drone'])
     def load_annotations(self, ann_file):
 
@@ -44,7 +43,7 @@ class MyDataset_drop10(CustomDataset):
                 if abs( (i['ann']['bboxes'][num_bbox][0] - i['ann']['bboxes'][num_bbox][2]) * (i['ann']['bboxes'][num_bbox][1] - i['ann']['bboxes'][num_bbox][3]) ) < 10:
                     pop_list.append(num_bbox)
 
-                # Удаляем слишком маленькие боксы и метки их классов
+            # Удаляем слишком маленькие боксы и метки их классов
             for el in pop_list[::-1]:
                 i['ann']['bboxes'].pop(el)
                 i['ann']['labels'].pop(el)
@@ -63,7 +62,7 @@ class MyDataset_drop10(CustomDataset):
 
 @DATASETS.register_module()
 class MyDataset_ignore10(CustomDataset):
-    
+    '''В датасете игнорируются все боксы, площадь которых меньше 10pix'''
     CLASSES = (['drone'])
     def load_annotations(self, ann_file):
 

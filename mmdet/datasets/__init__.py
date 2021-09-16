@@ -2,10 +2,8 @@ from .builder import DATASETS, PIPELINES, build_dataloader, build_dataset
 from .cityscapes import CityscapesDataset
 from .coco import CocoDataset
 from .my_dataset import MyDataset
-from .my_dataset_drop10 import MyDataset_drop10
-from .my_dataset_ignore10 import MyDataset_ignore10
 from .custom import CustomDataset
-from .my_dataset import MyDataset
+from .my_dataset import MyDataset, MyDataset_ignore10, MyDataset_drop10
 from .dataset_wrappers import (ClassBalancedDataset, ConcatDataset,
                                RepeatDataset)
 from .deepfashion import DeepFashionDataset
