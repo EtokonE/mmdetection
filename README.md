@@ -71,7 +71,7 @@ Optional arguments:
 
 ## Предварительная разметка
 
-- **[make_layout.py](make_layout.py)** - Предварительная разметка
+- **[make_labelling.py](make_labelling.py)** - Предварительная разметка
 
 ```bash
 $ python make_layout.py
